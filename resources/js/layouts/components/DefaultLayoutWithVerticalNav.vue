@@ -64,7 +64,7 @@ const upgradeBanner = computed(() => {
         :item="{
           title: 'Dashboard',
           icon: 'bx-home',
-          to: '/dashboard',
+          to: '/',
         }"
       />
 
@@ -78,7 +78,7 @@ const upgradeBanner = computed(() => {
         :item="{
           title: 'Error',
           icon: 'bx-info-circle',
-          to: '/no-existence',
+          // to: '/no-existence',
         }"
       />
     </template>
