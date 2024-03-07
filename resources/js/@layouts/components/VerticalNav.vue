@@ -63,9 +63,9 @@ const handleNavScroll = evt => {
             v-html="logo"
           />
 
-          <h1 class="leading-normal">
-            sneat
-          </h1>
+          <h5 class="leading-normal">
+            Document Tracking System
+          </h5>
         </RouterLink>
       </slot>
     </div>
