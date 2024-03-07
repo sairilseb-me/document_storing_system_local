@@ -4,7 +4,7 @@
         max-width="600"
     >
         <v-card class="pa-5">
-            <v-form>
+            <v-form @submit.prevent="saveRole">
                 <v-card-title>Roles</v-card-title>
                 <v-card-text>
                     <v-text-field v-model="roleName" label="Role Name"></v-text-field>
@@ -12,16 +12,16 @@
                 <v-card-actions>
                     <v-spacer></v-spacer>
                     <v-btn color="secondary" @click="closeDialog">Cancel</v-btn>
-                    <v-btn color="primary" type="button">Save</v-btn>
+                    <v-btn color="primary" type="submit">Save</v-btn>
                 </v-card-actions>
             </v-form>
-            
         </v-card>
     </v-dialog>
 </template>
 
 <script>
 import {ref, watch} from 'vue'
+import axios from '@axios'
 export default {
     props: {
         visible: {
@@ -38,6 +38,17 @@ export default {
             emit('close', false)
             resetInput()
 
+        }
+
+        const saveRole = () => {
+            axios.post('/role', {name: roleName.value})
+                .then(response => {
+                    console.log(response)
+                    closeDialog()
+                })
+                .catch(error => {
+                    console.log(error)
+                })
         }
 
         watch(
@@ -60,6 +71,7 @@ export default {
 
             //methods
             closeDialog,
+            saveRole,
         }
     },
 }
