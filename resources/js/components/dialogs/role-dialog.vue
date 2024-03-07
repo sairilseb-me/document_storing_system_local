@@ -7,7 +7,7 @@
             <v-form>
                 <v-card-title>Roles</v-card-title>
                 <v-card-text>
-                    <v-text-field v-model="roleName"></v-text-field>
+                    <v-text-field v-model="roleName" label="Role Name"></v-text-field>
                 </v-card-text>
                 <v-card-actions>
                     <v-spacer></v-spacer>
