@@ -2,6 +2,8 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\RoleController;
+use App\Models\Role;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,9 +21,9 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::group(['prefix' => 'role'], function (){
-    Route::get('/', 'RoleController@index');
-    Route::post('/store', 'RoleController@store');
-    Route::get('/show/{id}', 'RoleController@show');
-    Route::put('/update/{id}', 'RoleController@update');
-    Route::delete('/delete/{id}', 'RoleController@destroy');
+    Route::get('/', [RoleController::class, 'index']);
+    Route::post('/', [RoleController::class, 'store']);
+    Route::get('/{id}', [RoleController::class, 'show']);
+    Route::put('/{id}', [RoleController::class, 'update']);
+    Route::delete('/{id}', [RoleController::class, 'destroy']);
 });
