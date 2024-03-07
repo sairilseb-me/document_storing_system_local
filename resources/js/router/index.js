@@ -18,6 +18,14 @@ const router = createRouter({
     meta: {
       layout: 'blank'
     }
+   },
+   {
+    path: '/roles',
+    name: 'roles',
+    component: () => import('@/views/pages/users/roles.vue'),
+    meta: {
+      layout: 'default'
+    }
    }
   ],
 })
