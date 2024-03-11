@@ -51,6 +51,10 @@ export default {
             emit('edit', item)
         }
 
+        const deleteRole = (item) => {
+            emit('delete', item)
+        }
+
         return{
             //variables
             headers,
@@ -60,7 +64,7 @@ export default {
             // methods
             formattedDate,
             editRole,
-
+            deleteRole,
         }
     },
 }
