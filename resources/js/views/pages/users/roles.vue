@@ -16,7 +16,7 @@
         </v-row>
         <v-row>
             <v-col cols="12">
-                <role-table></role-table>
+                <role-table :items="roles"></role-table>
             </v-col>
         </v-row>
         <role-dialog :visible="visible" @close="closeRoleDialog"></role-dialog>
@@ -27,6 +27,8 @@
 import RoleTable from '@/components/tables/role-table.vue'
 import RoleDialog from '@/components/dialogs/role-dialog.vue'
 import { ref } from 'vue'
+import axios from '@axios'
+import { formatDate } from '@/@core/utils/formatters'
 export default {
     components: {
         RoleTable,
@@ -35,6 +37,8 @@ export default {
     setup() {
         
         const visible = ref(false)
+        const roles = ref([])
+
         const showRoleDialog = () => {
             visible.value = true
         }
@@ -42,10 +46,23 @@ export default {
             visible.value = false
         } 
 
+        const getRoles = () => {
+            axios.get('/role')
+            .then(({data}) => {
+                roles.value = data.roles
+            })
+            .catch(error => {
+                console.log(error)
+            })
+        }
+
+        getRoles()
+
         return {
 
             //variable
             visible,
+            roles,
 
             //methods
             showRoleDialog,
