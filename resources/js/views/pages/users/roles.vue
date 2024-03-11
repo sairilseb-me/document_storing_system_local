@@ -44,6 +44,7 @@ export default {
         }
         const closeRoleDialog = () => {
             visible.value = false
+            getRoles()
         } 
 
         const getRoles = () => {
