@@ -5,12 +5,12 @@
                 :headers="headers"
                 :items="items"
             >
-                <template #item.created_at="{ item }">
+                <template #[`item.created_at`]="{ item }">
                     {{ formattedDate(item.columns.created_at) }}
                 </template>
-                <template #item.actions="{ item }">
-                    <v-icon @click="editRole(item)" color="warning">mdi-pencil</v-icon>
-                    <v-icon @click="deleteRole(item)" color="error">mdi-delete</v-icon>
+                <template #[`item.actions`]="{ item }">
+                    <v-icon @click="editRole(item.selectable)" color="warning">mdi-pencil</v-icon>
+                    <v-icon @click="deleteRole(item.selectable)" color="error">mdi-delete</v-icon>
                 </template>
             </v-data-table>
         </v-card-text>
@@ -27,7 +27,7 @@ export default {
             default: () => []
         }
     },
-    setup() {
+    setup(_, {emit}) {
         const headers = [
             {
                 title: 'Name',
@@ -47,13 +47,19 @@ export default {
             return formatDate(date)
         }
 
+        const editRole = (item) => {
+            emit('edit', item)
+        }
+
         return{
             //variables
             headers,
 
             //computed
+
             // methods
             formattedDate,
+            editRole,
 
         }
     },
