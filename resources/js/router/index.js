@@ -26,6 +26,14 @@ const router = createRouter({
     meta: {
       layout: 'default'
     }
+   },
+   {
+    path: '/users',
+    name: 'users',
+    component: () => import('@/views/pages/users/users.vue'),
+    meta: {
+      layout: 'default'
+    }
    }
   ],
 })
