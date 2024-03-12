@@ -5,7 +5,7 @@
                 <v-card>
                     <v-card-text class="d-flex justify-space-between">
                         <h3>Users</h3>
-                        <v-btn color="primary">Add</v-btn>
+                        <v-btn color="primary" @click="openUserDialog">Add</v-btn>
                     </v-card-text>
                 </v-card>
             </v-col>
@@ -15,17 +15,41 @@
                 <user-table></user-table>
             </v-col>
         </v-row>
+        <user-dialog :visible="showUserDialog" @close="closeUserDialog"></user-dialog>
     </v-container>
 </template>
 
 <script>
 import { ref } from 'vue'
 import UserTable from '@/components/tables/user-table.vue'
+import UserDialog from '@/components/dialogs/user-dialog.vue'
 export default {
     components: {
-        UserTable
+        UserTable,
+        UserDialog,
     },
     setup() {
+        const users = ref([])
+        const showUserDialog = ref(false)
+
+        const openUserDialog = () => {
+            showUserDialog.value = true
+        }
+
+        const closeUserDialog = () => {
+            showUserDialog.value = false
+        }
+
+        return {
+            //variables
+            users,
+            showUserDialog,
+
+
+            //methods
+            openUserDialog,
+            closeUserDialog,
+        }   
         
     },
 }
