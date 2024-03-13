@@ -28,7 +28,15 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validate = $request->validate([
+            'name' => 'required | string',
+            'username' => 'required | string',
+            'email' => 'required | email',
+            'role_id' => 'required | integer',
+            'password' => 'required | string'
+        ]);
+
+        $user = User::create($validate);
     }
 
     /**

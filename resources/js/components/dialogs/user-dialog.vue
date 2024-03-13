@@ -9,11 +9,11 @@
                     <v-card class="pa-5">
                         <v-card-title class="mb-3">Users</v-card-title>
                         <v-card-text>
-                            <v-text-field class="mb-3" label="Enter Fullname"></v-text-field>
-                            <v-text-field class="mb-3" label="Enter Username"></v-text-field>
-                            <v-text-field class="mb-3" label="Enter Email"></v-text-field>
-                            <v-text-field class="mb-3" :type=" showPassword ? 'text' : 'password'" label="Enter Password" :append-inner-icon="showPassword ? 'mdi-eye-circle-outline' : 'mdi-eye-closed'" @click:append-inner="showPassword = !showPassword"></v-text-field>
-                            <role-autocomplete></role-autocomplete>
+                            <v-text-field class="mb-3" label="Enter Fullname" v-model="name"></v-text-field>
+                            <v-text-field class="mb-3" label="Enter Username" v-model="username"></v-text-field>
+                            <v-text-field class="mb-3" label="Enter Email" v-model="email"></v-text-field>
+                            <v-text-field class="mb-3" :type=" showPassword ? 'text' : 'password'" label="Enter Password" :append-inner-icon="showPassword ? 'mdi-eye-circle-outline' : 'mdi-eye-closed'" @click:append-inner="showPassword = !showPassword" v-model="userPassword"></v-text-field>
+                            <role-autocomplete @selected="selectedRole"></role-autocomplete>
                         </v-card-text>
                         <v-card-actions>
                             <v-spacer></v-spacer>
@@ -31,6 +31,7 @@
 <script>
 import { ref, watch } from 'vue'
 import RoleAutocomplete from '@/components/autocompletes/role-autocomplete.vue'
+import axios from '@axios'
 export default {
     components: {
         RoleAutocomplete
@@ -43,11 +44,11 @@ export default {
     },
     setup(props, {emit}) {
         const visible = ref(false)
-        const fullname = ref('')
+        const name = ref('')
         const username = ref('')
         const email = ref('')
         const userPassword = ref('')
-        const role = ref('')
+        const role_id = ref('')
         const showPassword = ref(false)
 
         watch(
@@ -57,6 +58,15 @@ export default {
             }
         )
 
+        const addNewUser =  () => {
+            axios.post('')
+        }
+
+        const selectedRole = (value) => {
+            console.log(value)
+            role_id.value = value
+        }
+
         const closeDialog = () => {
             emit('close')
         }
@@ -64,15 +74,16 @@ export default {
         return {
             //variables
             visible,
-            fullname,
+            name,
             username,
             email,
             userPassword,
-            role,
+            role_id,
             showPassword,
 
             //methods
-            closeDialog
+            closeDialog,
+            selectedRole,
         }
     },
 }
