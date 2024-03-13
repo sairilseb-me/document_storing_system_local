@@ -37,6 +37,13 @@ class UserController extends Controller
         ]);
 
         $user = User::create($validate);
+
+        if ($user)
+        {
+            return response()->json(['message' => 'Successfully created a user'], 200);
+        }
+
+        return response()->json(['message' => 'Failed to create a user'], 500);
     }
 
     /**

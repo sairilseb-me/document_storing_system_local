@@ -4,8 +4,9 @@
         item-title="name"
         item-value="id"
         label="Select Role"
+        @update:model-value="selectedRole"
     >
-        
+
     </v-autocomplete>
 </template>
 
@@ -13,7 +14,7 @@
 import { ref } from 'vue'
 import axios from '@axios'
 export default {
-    setup() {
+    setup(_, {emit}) {
 
 
         const roles = ref([])
@@ -21,7 +22,6 @@ export default {
         const getRoles = () => {
             axios.get('/role')
             .then(({data}) => {
-                console.log(data.roles)
                 roles.value = data.roles
             })
             .catch(error => {
@@ -29,10 +29,17 @@ export default {
             })
         }
 
+        const selectedRole = (value) => {
+            emit('select', value)
+        }
+
         getRoles()
         return {
             //variables
-            roles
+            roles,
+
+            //methods
+            selectedRole,
         }
     },
 }

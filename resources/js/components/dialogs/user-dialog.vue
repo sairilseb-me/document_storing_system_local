@@ -5,7 +5,7 @@
     >
         <v-row>
             <v-col cols="12">
-                <v-form>
+                <v-form @submit.prevent="addNewUser">
                     <v-card class="pa-5">
                         <v-card-title class="mb-3">Users</v-card-title>
                         <v-card-text>
@@ -13,7 +13,7 @@
                             <v-text-field class="mb-3" label="Enter Username" v-model="username"></v-text-field>
                             <v-text-field class="mb-3" label="Enter Email" v-model="email"></v-text-field>
                             <v-text-field class="mb-3" :type=" showPassword ? 'text' : 'password'" label="Enter Password" :append-inner-icon="showPassword ? 'mdi-eye-circle-outline' : 'mdi-eye-closed'" @click:append-inner="showPassword = !showPassword" v-model="userPassword"></v-text-field>
-                            <role-autocomplete @selected="selectedRole"></role-autocomplete>
+                            <role-autocomplete @select="selectedRole"></role-autocomplete>
                         </v-card-text>
                         <v-card-actions>
                             <v-spacer></v-spacer>
@@ -58,8 +58,21 @@ export default {
             }
         )
 
-        const addNewUser =  () => {
-            axios.post('')
+        const addNewUser =  () => {            
+            axios.post('/user', {
+                name: name.value,
+                username: username.value,
+                email: email.value,
+                password: userPassword.value,
+                role_id: role_id.value
+            })
+                .then(response => {
+                    console.log(response)
+                    closeDialog()
+                })
+                .catch(error => {
+                    console.log(error)
+                })
         }
 
         const selectedRole = (value) => {
@@ -84,6 +97,7 @@ export default {
             //methods
             closeDialog,
             selectedRole,
+            addNewUser,
         }
     },
 }
