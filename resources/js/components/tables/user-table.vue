@@ -5,8 +5,17 @@
                 <v-card-text>
                     <v-data-table
                         :headers="headers"
+                        :items="items"
                     >
+                        <template #[`item.role_id`]="{ item }">
+                            {{ getRoleName(item.selectable.id) }}
+                        </template>
 
+                        <template #[`item.actions`]="{item}">
+                            <v-spacer></v-spacer>
+                            <v-icon color="warning">mdi-pencil</v-icon>
+                            <v-icon color="error">mdi-delete</v-icon>
+                        </template>
                     </v-data-table>
                 </v-card-text>
             </v-card>
@@ -15,13 +24,20 @@
 </template>
 
 <script>
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
+import axios from '@axios'
 export default {
+    props: {
+        items: {
+            type: Array,
+            default: () => []
+        }
+    },
     setup() {
         const headers = ref([
             {
                 title: 'Fullname',
-                key: 'fullname'
+                key: 'name'
             },
             {
                 title: 'Username',
@@ -33,7 +49,7 @@ export default {
             },
             {
                 title: 'Role',
-                key: 'role'
+                key: 'role_id'
             },
             {
                 title: 'Actions',
@@ -41,10 +57,32 @@ export default {
             }
         ])
 
+        const roles = ref([])
+
+        const getRoleName = (id) => {
+            const role = roles.value.find(r => r.id == id)
+            return role ? role.name : ''
+        }
+
+        const getRoles = () => {
+            axios.get('/role')
+            .then(({data}) => {
+                roles.value = data.roles
+            })
+            .catch(error => {
+                console.log(error)
+            })
+        }
+
+        getRoles()
+
 
         return {
             //variables
-            headers
+            headers,
+
+            //computed
+            getRoleName,
         }
     },
 }
