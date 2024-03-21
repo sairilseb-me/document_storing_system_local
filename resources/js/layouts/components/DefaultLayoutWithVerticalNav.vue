@@ -76,9 +76,16 @@ const upgradeBanner = computed(() => {
       />
       <VerticalNavLink
         :item="{
-          title: 'Error',
-          icon: 'bx-info-circle',
-          // to: '/no-existence',
+          title: 'Users',
+          icon: 'mdi-account-group',
+          to: '/users',
+        }"
+      />
+      <VerticalNavLink
+        :item="{
+          title: 'Roles',
+          icon: 'mdi-account-settings',
+          to: '/roles',
         }"
       />
     </template>

@@ -37,6 +37,7 @@ const aliases = {
   minus: 'bx-minus',
   sortAsc: 'bx-sort-up',
   sortDesc: 'bx-sort-down',
+  accountGroup: 'bx-account-group',
 }
 
 export const iconify = {
