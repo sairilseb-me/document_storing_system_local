@@ -68,7 +68,23 @@ class UserController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $validate = $request->validate([
+            'name' => 'required | string',
+            'username' => 'required | string',
+            'email' => 'required | email',
+            'role_id' => 'required | integer',
+        ]);
+        
+        $user = User::findOrFail($id);
+        $user->name = $validate['name'];
+        $user->username = $validate['username'];
+        $user->email = $validate['email'];
+        $user->role_id = $validate['role_id'];
+        $user->update();
+
+        if ($user) return response()->json(['message' => 'Successfully updated a user'], 200);
+        return response()->json(['message' => 'Failed to update a user'], 500);
+
     }
 
     /**

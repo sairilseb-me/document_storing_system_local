@@ -1,5 +1,6 @@
 <template>
     <v-autocomplete
+        v-model="role_id"
         :items="roles"
         item-title="name"
         item-value="id"
@@ -14,10 +15,25 @@
 import { ref } from 'vue'
 import axios from '@axios'
 export default {
-    setup(_, {emit}) {
+    props: {
+        role_id: {
+            type: [Number, String],
+            default: 1
+        }
+    },
+    setup(props, {emit}) {
 
-
+        const role_id = ref(null)
         const roles = ref([])
+
+        watch(
+            () => props.role_id,
+            (value) => {
+                if (value){
+                    role_id.value = value
+                }
+            }, {immediate: true}
+        )
 
         const getRoles = () => {
             axios.get('/role')
@@ -37,6 +53,7 @@ export default {
         return {
             //variables
             roles,
+            role_id,
 
             //methods
             selectedRole,

@@ -12,10 +12,10 @@
         </v-row>
         <v-row>
             <v-col cols="12">
-                <user-table :items="users"></user-table>
+                <user-table :items="users" @edit="handleEdit"></user-table>
             </v-col>
         </v-row>
-        <user-dialog :visible="showUserDialog" @close="closeUserDialog"></user-dialog>
+        <user-dialog :visible="showUserDialog" :user="user" @close="closeUserDialog"></user-dialog>
     </v-container>
 </template>
 
@@ -31,6 +31,7 @@ export default {
     },
     setup() {
         const users = ref([])
+        const user = ref({})
         const showUserDialog = ref(false)
 
         const openUserDialog = () => {
@@ -49,17 +50,24 @@ export default {
             })
         }
 
+        const handleEdit = (value) => {
+            user.value = value  
+            openUserDialog()
+        }
+
         getUsers()
 
         return {
             //variables
             users,
             showUserDialog,
+            user,
 
 
             //methods
             openUserDialog,
             closeUserDialog,
+            handleEdit,
         }   
         
     },

@@ -13,7 +13,7 @@
 
                         <template #[`item.actions`]="{item}">
                             <v-spacer></v-spacer>
-                            <v-icon color="warning">mdi-pencil</v-icon>
+                            <v-icon color="warning" @click="editUser(item.selectable)">mdi-pencil</v-icon>
                             <v-icon color="error">mdi-delete</v-icon>
                         </template>
                     </v-data-table>
@@ -33,7 +33,7 @@ export default {
             default: () => []
         }
     },
-    setup() {
+    setup(_, {emit}) {
         const headers = ref([
             {
                 title: 'Fullname',
@@ -74,6 +74,10 @@ export default {
             })
         }
 
+        const editUser = (user) => {
+            emit('edit', user)
+        }
+
         getRoles()
 
 
@@ -83,7 +87,8 @@ export default {
 
             //computed
             getRoleName,
-        }
+            editUser,
+        }   
     },
 }
 </script>
