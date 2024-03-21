@@ -5,9 +5,9 @@
     >
         <v-row>
             <v-col>
-                <v-card>
+                <v-card class="pa-5">
                     <v-form @submit.prevent="deleteItem">
-                        <v-card-title>Delete</v-card-title>
+                        <v-card-title>{{ deleteDetails.title ? deleteDetails.title : 'Delete' }}</v-card-title>
                         <v-card-text>
                             {{ deleteDetails.message ? deleteDetails.message : 'Are you sure you want to delete this item?'}}
                         </v-card-text>

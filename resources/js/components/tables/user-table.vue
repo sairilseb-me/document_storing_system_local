@@ -14,7 +14,7 @@
                         <template #[`item.actions`]="{item}">
                             <v-spacer></v-spacer>
                             <v-icon color="warning" @click="editUser(item.selectable)">mdi-pencil</v-icon>
-                            <v-icon color="error">mdi-delete</v-icon>
+                            <v-icon color="error" @click="deleteUser(item.selectable.id)">mdi-delete</v-icon>
                         </template>
                     </v-data-table>
                 </v-card-text>
@@ -78,6 +78,9 @@ export default {
             emit('edit', user)
         }
 
+        const deleteUser = (user_id) => {
+            emit('delete', user_id)
+        }
         getRoles()
 
 
@@ -88,6 +91,7 @@ export default {
             //computed
             getRoleName,
             editUser,
+            deleteUser,
         }   
     },
 }
