@@ -44,9 +44,13 @@ class OfficeController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Office $office)
+    public function show($id)
     {
-        //
+        $office = Office::findOrFail($id);
+
+        if ($office) return response()->json(['office' => $office], 200);
+
+        return response()->json(['message' => 'Office not found'], 404);
     }
 
     /**
