@@ -12,10 +12,10 @@
         </v-row>
         <v-row>
             <v-col>
-                <office-table :offices="offices"></office-table>
+                <office-table :offices="offices" @edit="editOffice"></office-table>
             </v-col>
         </v-row>
-        <office-dialog :visible="showOfficeDialog" @close="closeShowOfficeDialog"></office-dialog>
+        <office-dialog :visible="showOfficeDialog" :office="office" @close="closeShowOfficeDialog"></office-dialog>
     </v-container>
 </template>
 
@@ -33,17 +33,23 @@ export default {
     setup() {
         const showOfficeDialog = ref(false)
         const offices = ref([])
+        const office = ref(null)
 
         const closeShowOfficeDialog = () => {
             showOfficeDialog.value = false
+            getOffices()
         }
 
         const getOffices = () => {
             axios.get('/office')
             .then(({data}) => {
                 offices.value = data.offices
-                console.log(offices.value)
             })
+        }
+
+        const editOffice = (data) => {
+            office.value = data
+            showOfficeDialog.value = true
         }
 
         getOffices()
@@ -52,10 +58,12 @@ export default {
             //variable
             showOfficeDialog,
             offices,
+            office,
 
 
             //methods
-            closeShowOfficeDialog
+            closeShowOfficeDialog,
+            editOffice,
         }
     },
 }

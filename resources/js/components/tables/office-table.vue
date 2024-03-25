@@ -7,10 +7,13 @@
                 item-title="name"
                 item-value="id"
             >
+                <!-- <template v-slot:[`item.name`] = "{item}">
+                    {{ item.selectable.id }}
+                </template> -->
                 <template
                     v-slot:[`item.actions`]=" {item} "
                 >
-                    <v-icon color="warning">mdi-pencil</v-icon>
+                    <v-icon color="warning" @click="editOffice(item.selectable.id)">mdi-pencil</v-icon>
                     <v-icon color="error">mdi-trash</v-icon>
                 </template>
             </v-data-table>
@@ -19,6 +22,7 @@
 </template>
 
 <script>
+import axios from '@axios'
 
 export default {
     props: {
@@ -27,7 +31,7 @@ export default {
             default: () => []
         }
     },
-    setup() {
+    setup(_, {emit}) {
         const headers = [
             {
                 title: 'Office Name',
@@ -39,12 +43,26 @@ export default {
             }
         ]
 
+        const office = ref(null)
+
+        const editOffice = (id) => {
+            axios.get(`/office/${id}`)
+            .then(({data}) => {
+                office.value = data.office
+                emit('edit', office.value)
+            })
+
+        }
+
 
 
         return {
 
             //variable
             headers,
+
+            //methods
+            editOffice,
         }
         
     },

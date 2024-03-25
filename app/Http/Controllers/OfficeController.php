@@ -46,6 +46,7 @@ class OfficeController extends Controller
      */
     public function show($id)
     {
+
         $office = Office::findOrFail($id);
 
         if ($office) return response()->json(['office' => $office], 200);

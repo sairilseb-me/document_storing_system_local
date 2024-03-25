@@ -4,7 +4,7 @@
         max-width="500"
     >
         <v-card class="pa-5">
-            <v-form @submit.prevent="addOffice">
+            <v-form @submit.prevent="resolveAction">
                 <v-card-title>Offices</v-card-title>
                 <v-card-text>
                     <v-text-field label="Enter Office Name" v-model="office_name"></v-text-field>
@@ -12,7 +12,7 @@
                 <v-card-actions>
                     <v-spacer></v-spacer>
                     <v-btn color="secondary" @click="closeDialog">Close</v-btn>
-                    <v-btn color="primary" type="submit">Add Office</v-btn>
+                    <v-btn color="primary" type="submit">{{ office.id ? 'Edit Office' : 'Add Office' }}</v-btn>
                 </v-card-actions>
             </v-form>
            
@@ -29,6 +29,10 @@ export default {
             type: Boolean,
             default: false,
         },
+        office: {
+            type: Object,
+            default: () => {}
+        }
     },
     setup(props, { emit }) {
         const visible = ref(false)
@@ -38,6 +42,15 @@ export default {
             () => props.visible,
             (value) => {
                 visible.value = value
+            }
+        )
+
+        watch(
+            () => props.office,
+            (value) => {
+                if (value && value.id){
+                    office_name.value = value.name
+                }
             }
         )
 
@@ -52,8 +65,28 @@ export default {
             .catch((error) => {
                 console.log(error.response.data)
             })
-            
         }
+
+        const editOffice = () => {
+            axios.put(`/office/${props.office.id}`, {
+                name: office_name.value
+            })
+            .then(({data}) => {
+                console.log(data.message)
+                closeDialog()
+            })
+            .catch(err => {
+                console.log(err.response.data)
+            })
+        }
+
+        const resolveAction = computed(() => {
+            if (props.office && props.office.id){
+                return editOffice
+            }
+
+            return addOffice
+        })
 
         const closeDialog = () => {
             emit('close')
@@ -68,10 +101,12 @@ export default {
             visible,
             office_name,
             
+            // computed
+            resolveAction,
 
             //methods
             closeDialog,
-            addOffice,
+            
         }
     },
 }
