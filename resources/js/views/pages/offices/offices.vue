@@ -12,10 +12,11 @@
         </v-row>
         <v-row>
             <v-col>
-                <office-table :offices="offices" @edit="editOffice"></office-table>
+                <office-table :offices="offices" @edit="editOffice" @delete="deleteOffice"></office-table>
             </v-col>
         </v-row>
         <office-dialog :visible="showOfficeDialog" :office="office" @close="closeShowOfficeDialog"></office-dialog>
+        <delete-dialog :details="deleteDetails" :visible="deleteDialogVisible" @close="deleteDialogClose"></delete-dialog>
     </v-container>
 </template>
 
@@ -23,17 +24,21 @@
 
 import OfficeDialog from '@/components/dialogs/office-dialog.vue'
 import OfficeTable from '@/components/tables/office-table.vue'
+import DeleteDialog from '@/components/dialogs/delete-dialog.vue'
 import { ref } from 'vue'
 import axios from '@axios'
 export default {
     components: {
         OfficeDialog,
-        OfficeTable
+        OfficeTable,
+        DeleteDialog,
     },
     setup() {
         const showOfficeDialog = ref(false)
         const offices = ref([])
         const office = ref(null)
+        const deleteDetails = ref({})
+        const deleteDialogVisible = ref(false)
 
         const closeShowOfficeDialog = () => {
             showOfficeDialog.value = false
@@ -52,6 +57,19 @@ export default {
             showOfficeDialog.value = true
         }
 
+        const deleteOffice = (id) => {
+            deleteDetails.value = {
+                url: '/office/' + id,
+                message: 'Are you sure you want to delete this office?'
+            }
+            deleteDialogVisible.value = true
+        }
+
+        const deleteDialogClose = () => {
+            deleteDialogVisible.value = false
+            getOffices()
+        }
+
         getOffices()
 
         return {
@@ -59,11 +77,15 @@ export default {
             showOfficeDialog,
             offices,
             office,
+            deleteDetails,
+            deleteDialogVisible,
 
 
             //methods
             closeShowOfficeDialog,
             editOffice,
+            deleteOffice,
+            deleteDialogClose,
         }
     },
 }

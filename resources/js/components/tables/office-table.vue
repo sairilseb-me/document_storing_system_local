@@ -14,7 +14,7 @@
                     v-slot:[`item.actions`]=" {item} "
                 >
                     <v-icon color="warning" @click="editOffice(item.selectable.id)">mdi-pencil</v-icon>
-                    <v-icon color="error">mdi-trash</v-icon>
+                    <v-icon color="error" @click="deleteOffice(item.selectable.id)">mdi-trash</v-icon>
                 </template>
             </v-data-table>
         </v-card-text>
@@ -54,7 +54,9 @@ export default {
 
         }
 
-
+        const deleteOffice = (id) => {
+            emit('delete', id)
+        }
 
         return {
 
@@ -63,6 +65,7 @@ export default {
 
             //methods
             editOffice,
+            deleteOffice,
         }
         
     },
