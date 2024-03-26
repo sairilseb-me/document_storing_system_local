@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\OfficeController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RoleController;
@@ -35,4 +36,13 @@ Route::group(['prefix' => 'user'], function(){
     Route::get('/{id}', [UserController::class, 'show']);
     Route::put('/{id}', [UserController::class, 'update']);
     Route::delete('/{id}', [UserController::class, 'destroy']);
+});
+
+
+Route::group(['prefix' => 'office'], function(){
+    Route::get('/', [OfficeController::class, 'index']);
+    Route::post('/', [OfficeController::class, 'store']);
+    Route::get('/{id}', [OfficeController::class, 'show']);
+    Route::put('/{id}', [OfficeController::class, 'update']);
+    Route::delete('/{id}', [OfficeController::class, 'destroy']);
 });

@@ -34,8 +34,17 @@ const router = createRouter({
     meta: {
       layout: 'default'
     }
-   }
+   },
+   {
+    path: '/offices',
+    name: 'offices',
+    component: () => import('@/views/pages/offices/offices.vue'),
+    meta: {
+      layout: 'default'
+      }
+    },
   ],
+  
 })
 
 export default router
