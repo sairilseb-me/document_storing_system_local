@@ -88,6 +88,13 @@ const upgradeBanner = computed(() => {
           to: '/roles',
         }"
       />
+      <VerticalNavLink
+        :item="{
+          title: 'Offices',
+          icon: 'mdi-office-building',
+          to: '/offices',
+        }"
+      />
     </template>
 
 
