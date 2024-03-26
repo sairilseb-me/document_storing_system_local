@@ -12,7 +12,7 @@
                 <v-card-actions>
                     <v-spacer></v-spacer>
                     <v-btn color="secondary" @click="closeDialog">Close</v-btn>
-                    <v-btn color="primary" type="submit">{{ office.id ? 'Edit Office' : 'Add Office' }}</v-btn>
+                    <v-btn color="primary" type="submit">{{ office && office.id ? 'Edit Office' : 'Add Office' }}</v-btn>
                 </v-card-actions>
             </v-form>
            
