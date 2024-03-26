@@ -43,6 +43,14 @@ const router = createRouter({
       layout: 'default'
       }
     },
+    {
+      path: '/files',
+      name: 'files',
+      component: () => import('@/views/pages/files/files.vue'),
+      meta: {
+        layout: 'default'
+      }
+    }
   ],
   
 })
