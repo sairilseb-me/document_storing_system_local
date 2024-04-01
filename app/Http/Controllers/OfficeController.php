@@ -10,24 +10,10 @@ class OfficeController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request)
+    public function index()
     {
-        if ($request->has('all')){
-            $offices = Office::all();
-            return response()->json(['offices' => $offices], 200);
-        }
-
-        if ($request->has('local'))
-        {
-            $offices = Office::where('office', 'local')->get();
-            return response()->json(['offices' => $offices], 200);
-        }
-
-        if ($request->has('nga'))
-        {
-            $offices = Office::where('office', 'nga')->get();
-            return response()->json(['offices' => $offices], 200);
-        }
+        $offices = Office::all();
+        return response()->json(['offices' => $offices], 200);
         
     }
 
@@ -46,7 +32,6 @@ class OfficeController extends Controller
     {
         $validation = $request->validate([
             'name' => 'required|string',
-            'office' => 'required | string'
         ]);
 
         $office = Office::create($validation);
@@ -84,7 +69,6 @@ class OfficeController extends Controller
     {
         $validation = $request->validate([
             'name' => 'required|string',
-            'office' => 'required | string'
         ]);
 
 

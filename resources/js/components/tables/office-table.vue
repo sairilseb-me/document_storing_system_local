@@ -10,9 +10,6 @@
                 <!-- <template v-slot:[`item.name`] = "{item}">
                     {{ item.selectable.id }}
                 </template> -->
-                <template #[`item.office`] = "{item}">
-                    {{ item.selectable.office.toUpperCase() }}
-                </template>
                 <template
                     v-slot:[`item.actions`]=" {item} "
                 >
@@ -39,10 +36,6 @@ export default {
             {
                 title: 'Office Name',
                 key: 'name'
-            },
-            {
-                title: 'Category',
-                key: 'office'
             },
             {
                 title: 'Actions',

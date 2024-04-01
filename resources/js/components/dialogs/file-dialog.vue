@@ -11,7 +11,7 @@
                 <v-card-text>
                     <v-text-field label="Enter Filename" class="mb-3"></v-text-field>
                     <v-file-input label="Upload File" :prepend-icon="null" prepend-inner-icon="mdi-paperclip"></v-file-input>
-                    
+                    <v-textarea label="Remarks" class="mb-3"></v-textarea>
                 </v-card-text>
                 <v-card-actions>
                     <v-spacer></v-spacer>
@@ -25,7 +25,11 @@
 
 <script>
 import { watch } from 'vue'
+
 export default {
+    components: {
+       
+    },
     props: {
         visible: {
             type: Boolean,
