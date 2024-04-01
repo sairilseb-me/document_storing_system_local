@@ -46,7 +46,7 @@ export default {
         }
 
         const getOffices = () => {
-            axios.get('/office')
+            axios.get('/office?all')
             .then(({data}) => {
                 offices.value = data.offices
             })

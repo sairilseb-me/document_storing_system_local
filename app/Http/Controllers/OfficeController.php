@@ -10,11 +10,25 @@ class OfficeController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $offices = Office::all();
+        if ($request->has('all')){
+            $offices = Office::all();
+            return response()->json(['offices' => $offices], 200);
+        }
 
-        return response()->json(['offices' => $offices], 200);
+        if ($request->has('local'))
+        {
+            $offices = Office::where('office', 'local')->get();
+            return response()->json(['offices' => $offices], 200);
+        }
+
+        if ($request->has('nga'))
+        {
+            $offices = Office::where('office', 'nga')->get();
+            return response()->json(['offices' => $offices], 200);
+        }
+        
     }
 
     /**
