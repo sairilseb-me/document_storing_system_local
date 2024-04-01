@@ -32,6 +32,7 @@ class OfficeController extends Controller
     {
         $validation = $request->validate([
             'name' => 'required|string',
+            'office' => 'required | string'
         ]);
 
         $office = Office::create($validation);
@@ -69,6 +70,7 @@ class OfficeController extends Controller
     {
         $validation = $request->validate([
             'name' => 'required|string',
+            'office' => 'required | string'
         ]);
 
 
