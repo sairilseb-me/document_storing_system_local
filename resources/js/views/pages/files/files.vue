@@ -15,7 +15,7 @@
                 <file-table></file-table>
             </v-col>
         </v-row>
-        <file-dialog :visible="showFileDialog"></file-dialog>
+        <file-dialog :visible="showFileDialog" @close="closeShowFileDialog"></file-dialog>
     </v-container>
 </template>
 

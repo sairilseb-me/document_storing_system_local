@@ -8,13 +8,6 @@
                 <v-card-title>Offices</v-card-title>
                 <v-card-text>
                     <v-text-field label="Enter Office Name" v-model="office_name" class="mb-3"></v-text-field>
-                    <v-autocomplete
-                        v-model="selected_office_item"
-                        :items="office_option_items"
-                        class="mb-3"
-                        label="Office Category"
-                    >
-                    </v-autocomplete>
                 </v-card-text>
                 <v-card-actions>
                     <v-spacer></v-spacer>
@@ -44,10 +37,6 @@ export default {
     setup(props, { emit }) {
         const visible = ref(false)
         const office_name = ref(null)
-        const office_option_items = ref([
-        'LOCAL', 'NGA'
-        ])
-        const selected_office_item = ref(null)
 
         watch(
             () => props.visible,
@@ -62,15 +51,13 @@ export default {
             (value) => {
                 if (value && value.id){
                     office_name.value = value.name
-                    selected_office_item.value = value.office.toUpperCase()
                 }
             }
         )
 
         const addOffice = () => {
             axios.post('/office', {
-                name: office_name.value,
-                office: selected_office_item.value.toLowerCase()
+                name: office_name.value
             })
             .then(({data}) => {
                 console.log(data)
@@ -83,8 +70,7 @@ export default {
 
         const editOffice = () => {
             axios.put(`/office/${props.office.id}`, {
-                name: office_name.value,
-                office: selected_office_item.value.toLowerCase()
+                name: office_name.value
             })
             .then(({data}) => {
                 console.log(data.message)
@@ -110,14 +96,11 @@ export default {
 
         const clearInputs = () => {
             office_name.value = null
-            selected_office_item.value = null
         }   
 
         return {
             visible,
             office_name,
-            office_option_items,
-            selected_office_item,
             
             // computed
             resolveAction,
