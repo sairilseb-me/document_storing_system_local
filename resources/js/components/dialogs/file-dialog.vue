@@ -45,6 +45,7 @@ export default {
         const file = ref(null)
         const office_id = ref(null)
         const remarks = ref(null)
+        const date_received = ref(null)
 
         watch(
             () => props.visible,
