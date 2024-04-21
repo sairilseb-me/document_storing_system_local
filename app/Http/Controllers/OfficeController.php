@@ -36,6 +36,8 @@ class OfficeController extends Controller
 
         $office = Office::create($validation);
 
+        
+
         if ($office) return response()->json(['message' => 'Office created successfully'], 200);
 
         return response()->json(['message' => 'Failed to create office'], 500);
