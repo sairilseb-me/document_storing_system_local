@@ -14,10 +14,5 @@ class Office extends Model
         'name',
     ];
 
-
-    public function files()
-    {
-        return $this->hasMany(File::class);
-    }
 }
 

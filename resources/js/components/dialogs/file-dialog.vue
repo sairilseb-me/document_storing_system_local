@@ -32,6 +32,7 @@ import { ref, watch } from 'vue'
 import OfficeAutocomplete from '@/components/autocompletes/office-autocomplete.vue'
 import '@vuepic/vue-datepicker/dist/main.css';
 import axios from '@axios';
+import { convertTo24Hour, getDateAndTime } from '@/@core/utils';
 export default {
     components: {
        OfficeAutocomplete,
@@ -50,7 +51,7 @@ export default {
         const file = ref(null)
         const office_id = ref(null)
         const remarks = ref(null)
-        const selectedDate = ref(Date.now())
+        const selectedDate = ref(null)
         const selectedTime = ref(null)
        
         watch(
@@ -71,14 +72,15 @@ export default {
             if (selectedDate.value) {
                 if (selectedTime.value)
                 {
-                    newDate = new Date(`${selectedDate.value}T${selectedTime.value}`)
+                    let convertedTime = convertTo24Hour(selectedTime.value)
+                    newDate = new Date(`${selectedDate.value}T${convertedTime}`)
                 }else {
                     const tempDate = new Date()
                     const newTime = `${tempDate.getHours()}:${tempDate.getMinutes()}:${tempDate.getSeconds()}`
                     newDate = new Date((`${selectedDate.value}T${newTime}`))
                 }
             } else {
-                newDate = new Date()
+                newDate = new Date(getDateAndTime())
             }
 
             let formattedDate = newDate.toLocaleString('en-US', {
@@ -90,6 +92,7 @@ export default {
                 minute: 'numeric',
                 second: 'numeric'
             })
+
 
             formData.append('title', filename.value)
             formData.append('file', file.value[0])
@@ -120,7 +123,7 @@ export default {
             file.value = null
             office_id.value = null
             remarks.value = null
-            selectedDate.value = Date.now()
+            selectedDate.value = null
             selectedTime.value = null
         }
 
