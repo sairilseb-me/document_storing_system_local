@@ -19,4 +19,9 @@ class File extends Model
         'remarks',
         'date_received'
     ];
+
+    public function office()
+    {
+        return $this->hasOne(Office::class);
+    }
 }

@@ -13,7 +13,8 @@ class FileController extends Controller
      */
     public function index()
     {
-        //
+        $files = File::with('office')->get();
+        return response()->json(['files' => $files], 200);
     }
 
     /**

@@ -3,6 +3,7 @@
         <v-card-text>
             <v-data-table
                 :headers="headers"
+                :items="files"
             >
                 <template #[`item.actions`] = "{item}">
                     <v-icon color="secondary">mdi-view</v-icon>
@@ -16,20 +17,25 @@
 </template>
 
 <script>
+
+import { ref, watch } from 'vue'
+
 export default {
-    setup() {
+    props: {
+        files: {
+            type: Array,
+            default: []
+        }
+    },
+    setup(props) {
         const headers = ref([
             {
-                title: 'Filename',
-                key: 'filename'
+                title: 'title',
+                key: 'title'
             },
             {
-                title: 'Office From',
-                key: 'office_from'
-            },
-            {
-                title: 'Route From',
-                key: 'route_from'
+                title: 'Office Name',
+                key: 'office.name'
             },
             {
                 title: 'Date Received',
@@ -41,10 +47,19 @@ export default {
             }
         ])
 
+        const files = ref([])
+
+        watch(
+            () => props.files,
+            (value) => {
+                files.value = value
+            }
+        )
 
         return {
             //variables
             headers,
+            files,
 
         }
     },

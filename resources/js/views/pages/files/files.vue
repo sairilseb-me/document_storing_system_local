@@ -12,7 +12,7 @@
         </v-row>
         <v-row>
             <v-col>
-                <file-table></file-table>
+                <file-table :files="files"></file-table>
             </v-col>
         </v-row>
         <file-dialog :visible="showFileDialog" @close="closeShowFileDialog"></file-dialog>
@@ -33,14 +33,26 @@ export default {
     setup() {
 
         const showFileDialog = ref(false)
+        const files = ref([])
 
         const closeShowFileDialog = () => {
             showFileDialog.value = false
+            getFiles()
         }
+
+        const getFiles = () => {
+            axios.get('file')
+            .then(({data}) => {
+                files.value = data.files
+            })
+        }
+
+        getFiles()
 
         return {
             //variables
             showFileDialog,
+            files,
 
             //methods
             closeShowFileDialog
