@@ -6,9 +6,9 @@
                 :items="files"
             >
                 <template #[`item.actions`] = "{item}">
-                    <v-icon color="secondary">mdi-view</v-icon>
-                    <v-icon color="warning">mdi-pencil</v-icon>
-                    <v-icon color="error">mdi-trash</v-icon>
+                    <v-icon color="secondary" @click="viewFileHandler(item.selectable)">mdi-eye-outline</v-icon>
+                    <v-icon color="warning" >mdi-pencil</v-icon>
+                    <v-icon color="error" >mdi-trash</v-icon>
                 </template>
             </v-data-table>
         </v-card-text>
@@ -27,7 +27,7 @@ export default {
             default: []
         }
     },
-    setup(props) {
+    setup(props, {emit}) {
         const headers = ref([
             {
                 title: 'title',
@@ -56,12 +56,26 @@ export default {
             }
         )
 
+        const editFile = (file) => {
+            console.log(file)
+        }
+
+        const viewFileHandler = (file) => {
+            emit('view', file)
+        }
+
         return {
             //variables
             headers,
             files,
 
+            //methods
+            viewFileHandler
         }
     },
 }
 </script>
+
+<style scoped>
+
+</style>

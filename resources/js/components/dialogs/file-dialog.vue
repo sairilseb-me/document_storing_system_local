@@ -12,7 +12,7 @@
                     <v-text-field label="Enter Filename" class="mb-3" v-model="filename"></v-text-field>
                     <v-file-input label="Upload File" :prepend-icon="null" prepend-inner-icon="mdi-paperclip" class="mb-3" v-model="file"></v-file-input>
                     
-                    <office-autocomplete class="mb-3" @select="office_id = $event"></office-autocomplete>
+                    <office-autocomplete class="mb-3" v-model="office_id"></office-autocomplete>
                     <v-text-field type="date" class="mb-3" label="Select Date" v-model="selectedDate"></v-text-field>
                     <v-text-field type="time" label="Enter Time" class="mb-3" v-model="selectedTime"></v-text-field>
                     <v-textarea label="Remarks" class="mb-3" v-model="remarks"></v-textarea>
@@ -67,51 +67,51 @@ export default {
         }
 
         const addFile = () => {
-            let newDate = null
-            let formData = new FormData()
-            if (selectedDate.value) {
-                if (selectedTime.value)
-                {
-                    let convertedTime = convertTo24Hour(selectedTime.value)
-                    newDate = new Date(`${selectedDate.value}T${convertedTime}`)
-                }else {
-                    const tempDate = new Date()
-                    const newTime = `${tempDate.getHours()}:${tempDate.getMinutes()}:${tempDate.getSeconds()}`
-                    newDate = new Date((`${selectedDate.value}T${newTime}`))
-                }
-            } else {
-                newDate = new Date(getDateAndTime())
-            }
+            // let newDate = null
+            // let formData = new FormData()
+            // if (selectedDate.value) {
+            //     if (selectedTime.value)
+            //     {
+            //         let convertedTime = convertTo24Hour(selectedTime.value)
+            //         newDate = new Date(`${selectedDate.value}T${convertedTime}`)
+            //     }else {
+            //         const tempDate = new Date()
+            //         const newTime = `${tempDate.getHours()}:${tempDate.getMinutes()}:${tempDate.getSeconds()}`
+            //         newDate = new Date((`${selectedDate.value}T${newTime}`))
+            //     }
+            // } else {
+            //     newDate = new Date(getDateAndTime())
+            // }
 
-            let formattedDate = newDate.toLocaleString('en-US', {
-                weekday: 'short',
-                year: 'numeric',
-                month: 'short',
-                day: '2-digit',
-                hour: 'numeric',
-                minute: 'numeric',
-                second: 'numeric'
-            })
+            // let formattedDate = newDate.toLocaleString('en-US', {
+            //     weekday: 'short',
+            //     year: 'numeric',
+            //     month: 'short',
+            //     day: '2-digit',
+            //     hour: 'numeric',
+            //     minute: 'numeric',
+            //     second: 'numeric'
+            // })
 
 
-            formData.append('title', filename.value)
-            formData.append('file', file.value[0])
-            formData.append('office_id', office_id.value)
-            formData.append('remarks', remarks.value)
-            formData.append('date_received', formattedDate)
+            // formData.append('title', filename.value)
+            // formData.append('file', file.value[0])
+            // formData.append('office_id', office_id.value)
+            // formData.append('remarks', remarks.value)
+            // formData.append('date_received', formattedDate)
 
-            axios.post('/file', formData, {
-                headers: {
-                    'Content-Type': 'multipart/form-data',
-                }
-            })
-            .then(response => {
-                if (response.status == 200){
-                    resetValues()
-                    closeDialog()
-                }
-            })
-                
+            // axios.post('/file', formData, {
+            //     headers: {
+            //         'Content-Type': 'multipart/form-data',
+            //     }
+            // })
+            // .then(response => {
+            //     if (response.status == 200){
+            //         resetValues()
+            //         closeDialog()
+            //     }
+            // })
+            console.log(office_id.value)
         }
 
         const closeDialog = () => {

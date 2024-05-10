@@ -12,10 +12,11 @@
         </v-row>
         <v-row>
             <v-col>
-                <file-table :files="files"></file-table>
+                <file-table :files="files" @view="showFileHandler"></file-table>
             </v-col>
         </v-row>
         <file-dialog :visible="showFileDialog" @close="closeShowFileDialog"></file-dialog>
+        <view-file-dialog :visible="viewFileDialog" :file="sfile" @close="viewFileDialog = false"></view-file-dialog>
     </v-container>
 </template>
 
@@ -25,15 +26,19 @@ import { ref } from 'vue'
 import axios from '@axios'
 import FileTable from '@/components/tables/file-table.vue'
 import FileDialog from '@/components/dialogs/file-dialog.vue'
+import ViewFileDialog from '@/components/dialogs/view-file-dialog.vue'
 export default {
     components: {
         FileTable,
         FileDialog,
+        ViewFileDialog,
     },
     setup() {
 
         const showFileDialog = ref(false)
         const files = ref([])
+        const viewFileDialog = ref(false)
+        const sfile = ref(null)
 
         const closeShowFileDialog = () => {
             showFileDialog.value = false
@@ -47,15 +52,23 @@ export default {
             })
         }
 
+        const showFileHandler = (file) => {
+            sfile.value = file
+            viewFileDialog.value = true
+        }
+
         getFiles()
 
         return {
             //variables
             showFileDialog,
             files,
+            sfile,
+            viewFileDialog,
 
             //methods
-            closeShowFileDialog
+            closeShowFileDialog,
+            showFileHandler,
         }
         
     },
