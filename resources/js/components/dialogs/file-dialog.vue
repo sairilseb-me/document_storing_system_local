@@ -32,7 +32,7 @@ import { ref, watch } from 'vue'
 import OfficeAutocomplete from '@/components/autocompletes/office-autocomplete.vue'
 import '@vuepic/vue-datepicker/dist/main.css';
 import axios from '@axios';
-import { convertTo24Hour, getDateAndTime } from '@/@core/utils';
+import { convertTo24Hour, getDateAndTime, padZero } from '@/@core/utils';
 export default {
     components: {
        OfficeAutocomplete,
@@ -67,51 +67,38 @@ export default {
         }
 
         const addFile = () => {
-            // let newDate = null
-            // let formData = new FormData()
-            // if (selectedDate.value) {
-            //     if (selectedTime.value)
-            //     {
-            //         let convertedTime = convertTo24Hour(selectedTime.value)
-            //         newDate = new Date(`${selectedDate.value}T${convertedTime}`)
-            //     }else {
-            //         const tempDate = new Date()
-            //         const newTime = `${tempDate.getHours()}:${tempDate.getMinutes()}:${tempDate.getSeconds()}`
-            //         newDate = new Date((`${selectedDate.value}T${newTime}`))
-            //     }
-            // } else {
-            //     newDate = new Date(getDateAndTime())
-            // }
+            let newDate = null
+            let formData = new FormData()
+            if (selectedDate.value) {
+                if (selectedTime.value)
+                {
+                    newDate = new Date(`${selectedDate.value}T${selectedTime.value}`)
+                }else {
+                    const tempDate = new Date()
+                    const newTime = `${padZero(tempDate.getHours())}:${padZero(tempDate.getMinutes())}:${padZero(tempDate.getSeconds())}`
+                    newDate = new Date((`${selectedDate.value}T${newTime}`))
+                }
+            } else {
+                newDate = new Date(getDateAndTime())
+            }
 
-            // let formattedDate = newDate.toLocaleString('en-US', {
-            //     weekday: 'short',
-            //     year: 'numeric',
-            //     month: 'short',
-            //     day: '2-digit',
-            //     hour: 'numeric',
-            //     minute: 'numeric',
-            //     second: 'numeric'
-            // })
+            formData.append('title', filename.value)
+            formData.append('file', file.value[0])
+            formData.append('office_id', office_id.value)
+            formData.append('remarks', remarks.value)
+            formData.append('date_received', newDate)
 
-
-            // formData.append('title', filename.value)
-            // formData.append('file', file.value[0])
-            // formData.append('office_id', office_id.value)
-            // formData.append('remarks', remarks.value)
-            // formData.append('date_received', formattedDate)
-
-            // axios.post('/file', formData, {
-            //     headers: {
-            //         'Content-Type': 'multipart/form-data',
-            //     }
-            // })
-            // .then(response => {
-            //     if (response.status == 200){
-            //         resetValues()
-            //         closeDialog()
-            //     }
-            // })
-            console.log(office_id.value)
+            axios.post('/file', {title: filename.value, file: file.value[0], office_id: office_id.value, remarks: remarks.value, date_received: newDate}, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                }
+            })
+            .then(response => {
+                if (response.status == 200){
+                    resetValues()
+                    closeDialog()
+                }
+            })
         }
 
         const closeDialog = () => {
