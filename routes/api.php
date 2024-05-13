@@ -54,4 +54,5 @@ Route::group(['prefix' => 'file'], function(){
     Route::get('/{id}', [FileController::class, 'show']);
     Route::put('/{id}', [FileController::class, 'update']);
     Route::delete('/{id}', [FileController::class, 'destroy']);
+    Route::get('/file-download/{id}', [FileController::class, 'download']);
 });

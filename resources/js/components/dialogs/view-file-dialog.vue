@@ -4,8 +4,12 @@
         v-model="visible"
     >
         <v-card>
-            <v-card-title>
+            <v-card-title class="d-flex justify-center items-center mt-3">
                 View File
+                <v-spacer></v-spacer>
+                <v-icon @click="closeDialog">
+                    mdi-close
+                </v-icon>
             </v-card-title>
             <v-card-text>
                 <v-text-field class="mb-3" label="Title" v-model="file.title" readonly></v-text-field>
@@ -25,6 +29,7 @@
 
 <script>
 import { ref, watch, computed } from 'vue'
+import axios from '@axios'
 
 export default {
     props: {
@@ -62,7 +67,7 @@ export default {
                 let props_array = props.file.path.split('/')
                 props_array[0] = props_array[0].replace('public', 'storage');
                 console.log(props_array)
-                return 'http://localhost:8000/' + props_array.join('/')
+                return import.meta.env.VITE_API_URL + '/' + props_array.join('/')
             }
         })
 
@@ -76,6 +81,26 @@ export default {
                
             }
         )
+
+        const downloadFile = async() => {
+            try {
+                const response = await axios.get(`/file-download/${file.value.id}`, {
+                    responseType: 'blob'
+                })
+                const url = window.URL.createObjectURL(new Blob([response.data]))
+                const link =document.createElement('a')
+                link.href = url
+                let filename_array = file.value.path.split('/')
+                let filename = filename_array[filename_array.length - 1]
+                link.setAttribute('download', filename)
+                document.body.appendChild(link)
+                link.click()
+                document.body.removeChild(link)
+                window.URL.revokeObjectURL(url)
+            }catch (error){
+                console.log(error)
+            }
+        }
 
         const closeDialog = () => {
             emit('close', false)
@@ -91,7 +116,8 @@ export default {
             returnFilePath,
 
             //methods
-            closeDialog
+            closeDialog,
+            downloadFile,
         }
     },
 }

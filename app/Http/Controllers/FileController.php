@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\File;
 use Illuminate\Http\Request;
 use App\Services\FileUploadServices;
+use Illuminate\Support\Facades\Storage;
 
 class FileController extends Controller
 {
@@ -85,5 +86,11 @@ class FileController extends Controller
     public function destroy(File $file)
     {
         //
+    }
+
+    public function download($id)
+    {
+        $file = File::find($id);
+        return Storage::download($file->path);
     }
 }
