@@ -12,11 +12,12 @@
         </v-row>
         <v-row>
             <v-col>
-                <file-table :files="files" @view="showFileHandler"></file-table>
+                <file-table :files="files" @view="showFileHandler" @delete="deleteFileHandler"></file-table>
             </v-col>
         </v-row>
         <file-dialog :visible="showFileDialog" @close="closeShowFileDialog"></file-dialog>
         <view-file-dialog :visible="viewFileDialog" :file="sfile" @close="closeViewFileDialog"></view-file-dialog>
+        <delete-dialog :details="deleteDetails" :visible="deleteDialogVisible" @close="deleteDialogClose"></delete-dialog>
     </v-container>
 </template>
 
@@ -27,11 +28,13 @@ import axios from '@axios'
 import FileTable from '@/components/tables/file-table.vue'
 import FileDialog from '@/components/dialogs/file-dialog.vue'
 import ViewFileDialog from '@/components/dialogs/view-file-dialog.vue'
+import DeleteDialog from '@/components/dialogs/delete-dialog.vue'
 export default {
     components: {
         FileTable,
         FileDialog,
         ViewFileDialog,
+        DeleteDialog,
     },
     setup() {
 
@@ -39,6 +42,8 @@ export default {
         const files = ref([])
         const viewFileDialog = ref(false)
         const sfile = ref(null)
+        const deleteDetails = ref({})
+        const deleteDialogVisible = ref(false) 
 
         const closeShowFileDialog = () => {
             showFileDialog.value = false
@@ -62,6 +67,20 @@ export default {
             viewFileDialog.value = true
         }
 
+        const deleteFileHandler = (file) => {
+            deleteDialogVisible.value = true
+            deleteDetails.value = {
+                url: '/file/' + file.id,
+                message: 'Are you sure you want to delete this file?'
+            }
+        }
+
+        const deleteDialogClose = () => {
+            deleteDialogVisible.value = false
+            deleteDetails.value = {}
+            getFiles()
+        }
+
         getFiles()
 
         return {
@@ -70,11 +89,15 @@ export default {
             files,
             sfile,
             viewFileDialog,
+            deleteDetails,
+            deleteDialogVisible,
 
             //methods
             closeShowFileDialog,
             closeViewFileDialog,
             showFileHandler,
+            deleteFileHandler,
+            deleteDialogClose,
         }
         
     },

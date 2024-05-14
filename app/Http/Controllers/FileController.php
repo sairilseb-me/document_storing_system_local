@@ -100,9 +100,15 @@ class FileController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(File $file)
+    public function destroy($id)
     {
-        //
+        $file = File::findOrFail($id);
+        if ($file){
+            $file->delete();
+            return response()->json(['message' => 'File deleted successfully'], 200);
+        }
+
+        return response()->json(['message' => 'Failed to delete file'], 500);
     }
 
     public function download($id)

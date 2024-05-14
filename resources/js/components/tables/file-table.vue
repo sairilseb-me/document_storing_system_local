@@ -7,8 +7,7 @@
             >
                 <template #[`item.actions`] = "{item}">
                     <v-icon color="secondary" @click="viewFileHandler(item.selectable)">mdi-eye-outline</v-icon>
-                    <v-icon color="warning" >mdi-pencil</v-icon>
-                    <v-icon color="error" >mdi-trash</v-icon>
+                    <v-icon color="error" @click="deleteFileHandler(item.selectable)">mdi-trash</v-icon>
                 </template>
             </v-data-table>
         </v-card-text>
@@ -56,8 +55,8 @@ export default {
             }
         )
 
-        const editFile = (file) => {
-            console.log(file)
+        const deleteFileHandler = (file) => {
+            emit('delete', file)
         }
 
         const viewFileHandler = (file) => {
@@ -70,7 +69,8 @@ export default {
             files,
 
             //methods
-            viewFileHandler
+            viewFileHandler,
+            deleteFileHandler,
         }
     },
 }
