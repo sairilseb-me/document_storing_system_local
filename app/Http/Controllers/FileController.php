@@ -75,9 +75,26 @@ class FileController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, File $file)
+    public function update(Request $request, $id)
     {
-        //
+       
+        $validate = $request->validate([
+            'title' => 'required | string',
+            'office_id' => 'required | numeric',
+            'remarks' => 'required | string',
+            'date_received' => 'required | date',
+        ]);
+
+        $file = File::findOrFail($id);
+
+        $file->title = $validate['title'];
+        $file->office_id = $validate['office_id'];
+        $file->remarks = $validate['remarks'];
+        $file->date_received = $validate['date_received'];
+        $file->save();
+
+        if ($file) return response()->json(['message' => 'File updated successfully'], 200);
+        return response()->json(['message' => 'Failed to update file'], 500);
     }
 
     /**

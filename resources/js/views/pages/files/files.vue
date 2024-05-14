@@ -16,7 +16,7 @@
             </v-col>
         </v-row>
         <file-dialog :visible="showFileDialog" @close="closeShowFileDialog"></file-dialog>
-        <view-file-dialog :visible="viewFileDialog" :file="sfile" @close="viewFileDialog = false"></view-file-dialog>
+        <view-file-dialog :visible="viewFileDialog" :file="sfile" @close="closeViewFileDialog"></view-file-dialog>
     </v-container>
 </template>
 
@@ -45,6 +45,11 @@ export default {
             getFiles()
         }
 
+        const closeViewFileDialog = () => {
+            viewFileDialog.value = false
+            getFiles()
+        }
+
         const getFiles = () => {
             axios.get('file')
             .then(({data}) => {
@@ -68,6 +73,7 @@ export default {
 
             //methods
             closeShowFileDialog,
+            closeViewFileDialog,
             showFileHandler,
         }
         
