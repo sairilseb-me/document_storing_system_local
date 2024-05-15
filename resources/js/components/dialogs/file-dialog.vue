@@ -32,7 +32,8 @@ import { ref, watch } from 'vue'
 import OfficeAutocomplete from '@/components/autocompletes/office-autocomplete.vue'
 import '@vuepic/vue-datepicker/dist/main.css';
 import axios from '@axios';
-import { convertTo24Hour, getDateAndTime, padZero } from '@/@core/utils';
+import { getDateAndTime, padZero } from '@/@core/utils';
+import { useGlobalSnackbarStore } from '@/store/GlobalSnackbar';
 export default {
     components: {
        OfficeAutocomplete,
@@ -53,6 +54,7 @@ export default {
         const remarks = ref(null)
         const selectedDate = ref(null)
         const selectedTime = ref(null)
+        const globalSnackbar = useGlobalSnackbarStore()
        
         watch(
             () => props.visible,
@@ -95,8 +97,19 @@ export default {
             })
             .then(response => {
                 if (response.status == 200){
+                    globalSnackbar.setValues({
+                        show: true,
+                        message: 'File added successfully',
+                        color: 'success'
+                    })
                     resetValues()
                     closeDialog()
+                }else{
+                    globalSnackbar.setValues({
+                        show: true,
+                        message: 'An error occurred while adding file',
+                        color: 'error'
+                    })
                 }
             })
         }

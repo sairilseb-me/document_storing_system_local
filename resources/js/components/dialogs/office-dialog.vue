@@ -22,6 +22,7 @@
 
 <script>
 import { ref, watch } from 'vue'
+import { useGlobalSnackbarStore } from '@/store/GlobalSnackbar'
 import axios from '@axios'
 export default {
     props: {
@@ -37,6 +38,7 @@ export default {
     setup(props, { emit }) {
         const visible = ref(false)
         const office_name = ref(null)
+        const globalSnackbar = useGlobalSnackbarStore()
 
         watch(
             () => props.visible,
@@ -59,12 +61,29 @@ export default {
             axios.post('/office', {
                 name: office_name.value
             })
-            .then(({data}) => {
-                console.log(data)
-                closeDialog()
+            .then(response => {
+                if (response.status == 200){
+                    globalSnackbar.setValues({
+                        show: true,
+                        message: 'Office added successfully',
+                        color: 'success'
+                    })
+                    closeDialog()
+                } else {
+                    globalSnackbar.setValues({
+                        show: true,
+                        message: 'An error occurred while adding office',
+                        color: 'error'
+                    })
+                }
+               
             })
             .catch((error) => {
-                console.log(error.response.data)
+                globalSnackbar.setValues({
+                    show: true,
+                    message: 'An error occurred while adding office',
+                    color: 'error'
+                })
             })
         }
 
@@ -72,12 +91,29 @@ export default {
             axios.put(`/office/${props.office.id}`, {
                 name: office_name.value
             })
-            .then(({data}) => {
-                console.log(data.message)
-                closeDialog()
+            .then(response => {
+                if (response.status == 200){
+                    globalSnackbar.setValues({
+                        show: true,
+                        message: 'Office updated successfully',
+                        color: 'success'
+                    })
+                    closeDialog()
+                } else {
+                    globalSnackbar.setValues({
+                        show: true,
+                        message: 'An error occurred while updating office',
+                        color: 'error'
+                    })
+                }
+                
             })
             .catch(err => {
-                console.log(err.response.data)
+                globalSnackbar.setValues({
+                        show: true,
+                        message: 'An error occurred while updating office',
+                        color: 'error'
+                    })
             })
         }
 

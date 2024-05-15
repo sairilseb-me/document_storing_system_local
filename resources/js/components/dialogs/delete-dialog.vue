@@ -26,6 +26,7 @@
 <script>
 import { ref, watch } from 'vue';
 import axios from '@axios'
+import { useGlobalSnackbarStore } from '@/store/GlobalSnackbar'
 export default {
     props: {
         visible: {
@@ -40,6 +41,7 @@ export default {
     setup(props, {emit}) {
         const visible = ref(false)
         const deleteDetails = ref({})
+        const globalSnackbar = useGlobalSnackbarStore()
 
         watch(
             () => props.visible,
@@ -62,7 +64,13 @@ export default {
                 console.log(deleteDetails.value.url)
                 axios.delete(deleteDetails.value.url)
                 .then(response => {
-                    console.log(response)
+                    if (response.status == 200){
+                        globalSnackbar.setValues({
+                            show: true,
+                            message: 'Item deleted successfully',
+                            color: 'success'
+                        })
+                    }
                     closeDialog()
                 })
                 .catch(error => {

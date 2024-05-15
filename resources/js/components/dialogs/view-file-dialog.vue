@@ -35,7 +35,7 @@
 import { ref, watch, computed } from 'vue'
 import axios from '@axios'
 import OfficeAutocomplete from '@/components/autocompletes/office-autocomplete.vue'
-
+import { useGlobalSnackbarStore } from '@/store/GlobalSnackbar'
 export default {
     components: {
         OfficeAutocomplete,
@@ -60,6 +60,7 @@ export default {
         const office_id = ref(null)
         const date_received = ref(null)
         const remarks = ref(null)
+        const globalSnackbar = useGlobalSnackbarStore()
         
         watch(
             () => props.visible,
@@ -108,6 +109,11 @@ export default {
             })
             .then(response => {
                 if (response.status == 200){
+                    globalSnackbar.setValues({
+                        show: true,
+                        message: 'File updated successfully',
+                        color: 'success'
+                    })
                     closeDialog()
                 }
             })

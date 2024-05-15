@@ -55,22 +55,50 @@ export default {
                             message: 'Role saved successfully',
                             color: 'success'
                         })
+                        closeDialog()
+                    }else {
+                        globalSnackbar.setValues({
+                            show: true,
+                            message: 'An error occurred while saving role',
+                            color: 'error'
+                        })
                     }
-                    closeDialog()
+                    
                 })
                 .catch(error => {
-                    console.log(error)
+                    globalSnackbar.setValues({
+                        show: true,
+                        message: 'An error occurred while saving role',
+                        color: 'error'
+                    })
                 })
         }
 
         const editRole = () => {
             axios.put(`/role/${prop.role.id}`, {name: roleName.value})
                 .then(response => {
-                    console.log(response.data)
-                    closeDialog()
+                    if (response.status == 200){
+                        globalSnackbar.setValues({
+                            show: true,
+                            message: 'Role updated successfully',
+                            color: 'success'
+                        })
+                        closeDialog()
+                    }else {
+                        globalSnackbar.setValues({
+                            show: true,
+                            message: 'An error occurred while updating role',
+                            color: 'error'
+                        })
+                    }
+                    
                 })
                 .catch(error => {
-                    console.log(error)
+                    globalSnackbar.setValues({
+                        show: true,
+                        message: 'An error occurred while updating role',
+                        color: 'error'
+                    })
                 })
         }
 
