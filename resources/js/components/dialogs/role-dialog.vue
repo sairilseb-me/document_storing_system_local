@@ -21,6 +21,7 @@
 
 <script>
 import {ref, watch, computed} from 'vue'
+import { useGlobalSnackbarStore } from '@/store/GlobalSnackbar'
 import axios from '@axios'
 export default {
     props: {
@@ -37,6 +38,7 @@ export default {
 
         const visible = ref(false)
         const roleName = ref('')
+        const globalSnackbar = useGlobalSnackbarStore()
 
         const closeDialog = () => {
             emit('close', false)
@@ -47,22 +49,56 @@ export default {
         const saveRole = () => {
             axios.post('/role', {name: roleName.value})
                 .then(response => {
-                    console.log(response)
-                    closeDialog()
+                    if (response.status == 200){
+                        globalSnackbar.setValues({
+                            show: true,
+                            message: 'Role saved successfully',
+                            color: 'success'
+                        })
+                        closeDialog()
+                    }else {
+                        globalSnackbar.setValues({
+                            show: true,
+                            message: 'An error occurred while saving role',
+                            color: 'error'
+                        })
+                    }
+                    
                 })
                 .catch(error => {
-                    console.log(error)
+                    globalSnackbar.setValues({
+                        show: true,
+                        message: 'An error occurred while saving role',
+                        color: 'error'
+                    })
                 })
         }
 
         const editRole = () => {
             axios.put(`/role/${prop.role.id}`, {name: roleName.value})
                 .then(response => {
-                    console.log(response.data)
-                    closeDialog()
+                    if (response.status == 200){
+                        globalSnackbar.setValues({
+                            show: true,
+                            message: 'Role updated successfully',
+                            color: 'success'
+                        })
+                        closeDialog()
+                    }else {
+                        globalSnackbar.setValues({
+                            show: true,
+                            message: 'An error occurred while updating role',
+                            color: 'error'
+                        })
+                    }
+                    
                 })
                 .catch(error => {
-                    console.log(error)
+                    globalSnackbar.setValues({
+                        show: true,
+                        message: 'An error occurred while updating role',
+                        color: 'error'
+                    })
                 })
         }
 
