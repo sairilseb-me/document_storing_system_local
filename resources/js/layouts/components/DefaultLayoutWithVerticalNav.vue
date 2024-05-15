@@ -95,6 +95,13 @@ const upgradeBanner = computed(() => {
           to: '/offices',
         }"
       />
+      <VerticalNavLink
+        :item="{
+          title: 'Files',
+          icon: 'mdi-files',
+          to: '/files',
+        }"
+      />
     </template>
 
 

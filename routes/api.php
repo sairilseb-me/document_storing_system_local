@@ -5,6 +5,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\FileController;
 use App\Models\Role;
 
 /*
@@ -45,4 +46,13 @@ Route::group(['prefix' => 'office'], function(){
     Route::get('/{id}', [OfficeController::class, 'show']);
     Route::put('/{id}', [OfficeController::class, 'update']);
     Route::delete('/{id}', [OfficeController::class, 'destroy']);
+});
+
+Route::group(['prefix' => 'file'], function(){
+    Route::get('/', [FileController::class, 'index']);
+    Route::post('/', [FileController::class, 'store']);
+    Route::get('/{id}', [FileController::class, 'show']);
+    Route::put('/{id}', [FileController::class, 'update']);
+    Route::delete('/{id}', [FileController::class, 'destroy']);
+    Route::get('/file-download/{id}', [FileController::class, 'download']);
 });

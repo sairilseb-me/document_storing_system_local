@@ -7,7 +7,7 @@
             <v-form @submit.prevent="resolveAction">
                 <v-card-title>Offices</v-card-title>
                 <v-card-text>
-                    <v-text-field label="Enter Office Name" v-model="office_name"></v-text-field>
+                    <v-text-field label="Enter Office Name" v-model="office_name" class="mb-3"></v-text-field>
                 </v-card-text>
                 <v-card-actions>
                     <v-spacer></v-spacer>
@@ -42,6 +42,7 @@ export default {
             () => props.visible,
             (value) => {
                 visible.value = value
+                
             }
         )
 

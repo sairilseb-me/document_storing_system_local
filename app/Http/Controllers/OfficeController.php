@@ -13,8 +13,8 @@ class OfficeController extends Controller
     public function index()
     {
         $offices = Office::all();
-
         return response()->json(['offices' => $offices], 200);
+        
     }
 
     /**
@@ -35,6 +35,8 @@ class OfficeController extends Controller
         ]);
 
         $office = Office::create($validation);
+
+        
 
         if ($office) return response()->json(['message' => 'Office created successfully'], 200);
 
