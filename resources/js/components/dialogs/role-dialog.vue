@@ -21,6 +21,7 @@
 
 <script>
 import {ref, watch, computed} from 'vue'
+import { useGlobalSnackbarStore } from '@/store/GlobalSnackbar'
 import axios from '@axios'
 export default {
     props: {
@@ -37,6 +38,7 @@ export default {
 
         const visible = ref(false)
         const roleName = ref('')
+        const globalSnackbar = useGlobalSnackbarStore()
 
         const closeDialog = () => {
             emit('close', false)
@@ -47,7 +49,13 @@ export default {
         const saveRole = () => {
             axios.post('/role', {name: roleName.value})
                 .then(response => {
-                    console.log(response)
+                    if (response.status == 200){
+                        globalSnackbar.setValues({
+                            show: true,
+                            message: 'Role saved successfully',
+                            color: 'success'
+                        })
+                    }
                     closeDialog()
                 })
                 .catch(error => {

@@ -4,6 +4,7 @@ import { hexToRgb } from '@layouts/utils'
 import DefaultLayout from '@/layouts/default.vue'
 import BlankLayout from '@/layouts/blank.vue'
 import { useRoute } from 'vue-router';
+import GlobalSnackbar from '@/components/snackbars/global-snackbar.vue'
 
 
 const { global } = useTheme()
@@ -21,6 +22,7 @@ const resolveLayout = computed(() => {
 
 <template>
   <VApp :style="`--v-global-theme-primary: ${hexToRgb(global.current.value.colors.primary)}`">
+    <GlobalSnackbar />
     <component :is="resolveLayout">
       <RouterView />
     </component>
