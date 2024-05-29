@@ -3,6 +3,7 @@ import AuthProvider from '@/views/pages/authentication/AuthProvider.vue'
 import logo from '@images/logo.svg?raw'
 import axios from '@axios'
 import {useRouter} from 'vue-router'  
+import {onMounted, ref} from 'vue'
 const form = ref({
   username: '',
   password: '',
@@ -17,9 +18,7 @@ const handleLogin = () => {
       if (response.status == 200){
         // handle success
         localStorage.setItem('token', response.data.token)
-        console.log("Success!")
         router.push({name: 'dashboard'})
-        console.log(localStorage.getItem('token'))
       }
     })
     .catch(error => {
@@ -28,6 +27,10 @@ const handleLogin = () => {
     })
 
 }
+
+onMounted(() => {
+  console.log(localStorage.getItem('token'))
+})
 
 const isPasswordVisible = ref(false)
 </script>

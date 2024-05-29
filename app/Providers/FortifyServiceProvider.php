@@ -16,6 +16,9 @@ use App\Models\User;
 use Illuminate\Auth\Events\Login;
 use Illuminate\Support\Facades\Hash;
 use Laravel\Fortify\Contracts\LoginResponse;
+use Laravel\Fortify\Contracts\LogoutResponse;
+use App\Http\Responses\LogoutResponse as CustomLogoutResponse;
+use App\Http\Responses\LoginResponse as CustomLoginResponse;
 use Illuminate\Support\Facades\Auth;
 
 class FortifyServiceProvider extends ServiceProvider
@@ -25,13 +28,10 @@ class FortifyServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        $this->app->instance(LoginResponse::class, new class implements LoginResponse {
-            public function toResponse($request)
-            {
-                $token = $request->user()->createToken('store_token')->plainTextToken;
-                return response()->json(['token' => $token, 'user' => Auth::user()]);
-            }
-        });
+        $this->app->singleton(LoginResponse::class, CustomLoginResponse::class); // login response
+        
+        $this->app->singleton(LogoutResponse::class, CustomLogoutResponse::class); //logout response
+       
     }
 
     /**
@@ -39,6 +39,7 @@ class FortifyServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+
         Fortify::authenticateUsing(function (Request $request) {
             $user = User::where('username', $request->username)->first();
      
