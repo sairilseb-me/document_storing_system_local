@@ -7,6 +7,9 @@ use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\FileController;
 use App\Models\Role;
+use App\Http\Controllers\AuthenticatedSessionController;
+use App\Http\Middleware\Authenticate;
+use Laravel\Fortify\Fortify;
 
 /*
 |--------------------------------------------------------------------------
