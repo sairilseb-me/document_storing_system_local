@@ -14,9 +14,7 @@ class LogoutResponse implements LogoutResponseContract
      */
     public function toResponse($request)
     {
-       $request->user()->tokens()->delete();
-
-       return response()->json(['message' => 'Logged out', 'token' => Auth::user()->tokens->first()], 200);
+       return response()->json(['message' => 'Logged out'], 200);
     }
 }
 

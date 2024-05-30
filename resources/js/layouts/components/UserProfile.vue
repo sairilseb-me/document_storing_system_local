@@ -15,7 +15,6 @@ const handleLogout = () => {
         // handle success
         localStorage.removeItem('token')
         console.log("Success logout!")
-        console.log(localStorage.getItem('token'))
         router.push({name: 'login'})
       }
     })
