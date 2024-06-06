@@ -7,6 +7,9 @@ use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\FileController;
 use App\Models\Role;
+use App\Http\Controllers\AuthenticatedSessionController;
+use App\Http\Middleware\Authenticate;
+use Laravel\Fortify\Fortify;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,13 +26,22 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::group(['prefix' => 'role'], function (){
-    Route::get('/', [RoleController::class, 'index']);
-    Route::post('/', [RoleController::class, 'store']);
-    Route::get('/{id}', [RoleController::class, 'show']);
-    Route::put('/{id}', [RoleController::class, 'update']);
-    Route::delete('/{id}', [RoleController::class, 'destroy']);
+Route::post('/logout', [AuthenticatedSessionController::class, 'destroy']);
+
+Route::group(['middleware' => ['auth:sanctum']], function(){
+   
+   
+
+    Route::group(['prefix' => 'role'], function (){
+        Route::get('/', [RoleController::class, 'index']);
+        Route::post('/', [RoleController::class, 'store']);
+        Route::get('/{id}', [RoleController::class, 'show']);
+        Route::put('/{id}', [RoleController::class, 'update']);
+        Route::delete('/{id}', [RoleController::class, 'destroy']);
+    });
+    
 });
+
 
 Route::group(['prefix' => 'user'], function(){
     Route::get('/', [UserController::class, 'index']);
@@ -56,3 +68,4 @@ Route::group(['prefix' => 'file'], function(){
     Route::delete('/{id}', [FileController::class, 'destroy']);
     Route::get('/file-download/{id}', [FileController::class, 'download']);
 });
+
