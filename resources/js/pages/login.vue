@@ -29,10 +29,6 @@ const handleLogin = () => {
 }
 
 onMounted(() => {
-  if (localStorage.getItem('token')) {
-    localStorage.removeItem('token')
-  }
-
   console.log(localStorage.getItem('token'))
 })
 
