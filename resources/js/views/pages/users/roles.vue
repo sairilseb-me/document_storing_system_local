@@ -54,7 +54,12 @@ export default {
         } 
 
         const getRoles = () => {
-            axios.get('/role')
+            axios.get('/role', {
+                headers: {
+                    Authorization: 'Bearer ' + localStorage.getItem('token'),
+                    Accept: 'application/json',
+                }
+            })
             .then(({data}) => {
                 roles.value = data.roles
             })

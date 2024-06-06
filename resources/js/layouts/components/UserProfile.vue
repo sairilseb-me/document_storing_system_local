@@ -1,6 +1,10 @@
 <script setup>
 import avatar1 from '@images/avatars/avatar-1.png'
 import axios from '@axios'
+import { useRouter } from 'vue-router'
+
+
+const router = useRouter()
 
 const handleLogout = () => {
   axios.post('/logout', { 
