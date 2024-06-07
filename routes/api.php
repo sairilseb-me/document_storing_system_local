@@ -53,6 +53,7 @@ Route::group(['middleware' => ['auth:sanctum']], function(){
         Route::get('/{id}', [OfficeController::class, 'show']);
         Route::put('/{id}', [OfficeController::class, 'update']);
         Route::delete('/{id}', [OfficeController::class, 'destroy']);
+        Route::get('/search/{office_name}', [OfficeController::class, 'search']);
         
     });
     
