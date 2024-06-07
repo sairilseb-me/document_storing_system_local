@@ -12,7 +12,25 @@
         </v-row>
         <v-row>
             <v-col cols="12">
-                <user-table :items="users" @edit="handleEdit" @delete="handleDelete"></user-table>
+                <v-card>
+                    <div class="mt-3 d-flex justify-end">
+                        <v-col cols="4">
+                            <v-text-field
+                                v-model="search"
+                                prepend-inner-icon="mdi-magnify"
+                                label="Search"
+                                single-line
+                                hide-details
+                                @update:model-value="searchUsers"
+                            ></v-text-field>
+                        </v-col>
+                    </div>
+                   
+                    <div class="mt-3">
+                        <user-table :items="users" @edit="handleEdit" @delete="handleDelete"></user-table>
+                    </div>
+                </v-card>
+                
             </v-col>
         </v-row>
         <user-dialog :visible="showUserDialog" :user="user" @close="closeUserDialog"></user-dialog>
@@ -38,6 +56,7 @@ export default {
         const showUserDialog = ref(false)
         const showDeleteDialog = ref(false)
         const deleteOptions = ref({})
+        const search = ref('')
 
         const openUserDialog = () => {
             showUserDialog.value = true
@@ -76,6 +95,17 @@ export default {
             }
         }
 
+        const searchUsers = () => {
+            if (search.value === '') {
+                getUsers()
+            } else {
+                axios.get(`/user/search/${search.value}`)
+                .then((response) => {
+                    users.value = response.data.users
+                })
+            }
+        }
+
         getUsers()
 
         return {
@@ -85,6 +115,7 @@ export default {
             user,
             showDeleteDialog,
             deleteOptions,
+            search,
 
 
             //methods
@@ -93,6 +124,7 @@ export default {
             handleEdit,
             handleDelete,
             closeDeleteDialog,
+            searchUsers,
         }   
         
     },

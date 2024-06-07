@@ -22,9 +22,6 @@ use Laravel\Fortify\Fortify;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
 
 Route::post('/logout', [AuthenticatedSessionController::class, 'destroy']);
 
@@ -39,6 +36,7 @@ Route::group(['middleware' => ['auth:sanctum']], function(){
     });
 
     Route::group(['prefix' => 'user'], function(){
+        Route::get('/search/{username}', [UserController::class, 'search']);
         Route::get('/', [UserController::class, 'index']);
         Route::post('/', [UserController::class, 'store']);
         Route::get('/{id}', [UserController::class, 'show']);
