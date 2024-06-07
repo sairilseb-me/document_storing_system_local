@@ -26,6 +26,18 @@ class OfficeController extends Controller
     }
 
     /**
+     * Search for offices by name.
+     * @param string $name
+     * @return \Illuminate\Http\Response
+     */
+
+     public function search($office_name)
+     {
+        $offices = Office::where('name', 'like', '%' . $office_name . '%')->get();
+        return response()->json(['offices' => $offices], 200);
+     }
+
+    /**
      * Store a newly created resource in storage.
      */
     public function store(Request $request)

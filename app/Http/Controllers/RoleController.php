@@ -26,6 +26,18 @@ class RoleController extends Controller
     }
 
     /**
+     * Search roles by name
+     * @param string $name
+     * @return \Illuminate\Http\Response
+     */
+
+     public function search($role_name)
+     {
+        $roles = Role::where('name', 'LIKE', "%$role_name%")->get();
+        return response()->json(['roles' => $roles], 200);
+     }
+
+    /**
      * Store a newly created resource in storage.
      */
     public function store(Request $request)

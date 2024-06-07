@@ -11,9 +11,28 @@
             </v-col>
         </v-row>
         <v-row>
-            <v-col>
-                <office-table :offices="offices" @edit="editOffice" @delete="deleteOffice"></office-table>
+            <v-col cols="12">
+                <v-card>
+                    <div class="mt-3 d-flex justify-end">
+                        <v-col cols="4">
+                            <v-text-field
+                                v-model="search"
+                                prepend-inner-icon="mdi-magnify"
+                                label="Search"
+                                single-line
+                                hide-details
+                                @update:model-value="searchOffices"
+                            ></v-text-field>
+                        </v-col>
+                    </div>
+                    <div>
+                        <v-col>
+                            <office-table :offices="offices" @edit="editOffice" @delete="deleteOffice"></office-table>
+                        </v-col>
+                    </div>
+                </v-card>
             </v-col>
+            
         </v-row>
         <office-dialog :visible="showOfficeDialog" :office="office" @close="closeShowOfficeDialog"></office-dialog>
         <delete-dialog :details="deleteDetails" :visible="deleteDialogVisible" @close="deleteDialogClose"></delete-dialog>
@@ -39,6 +58,8 @@ export default {
         const office = ref(null)
         const deleteDetails = ref({})
         const deleteDialogVisible = ref(false)
+        const search = ref('')
+
 
         const closeShowOfficeDialog = () => {
             showOfficeDialog.value = false
@@ -70,6 +91,17 @@ export default {
             getOffices()
         }
 
+        const searchOffices = () => {
+            if (search.value == ''){
+                getOffices()
+            } else {
+                axios.get(`/office/search/${search.value}`)
+                .then(({data}) => {
+                    offices.value = data.offices
+                })
+            }
+        }
+
         getOffices()
 
         return {
@@ -79,6 +111,7 @@ export default {
             office,
             deleteDetails,
             deleteDialogVisible,
+            search,
 
 
             //methods
@@ -86,6 +119,7 @@ export default {
             editOffice,
             deleteOffice,
             deleteDialogClose,
+            searchOffices,
         }
     },
 }

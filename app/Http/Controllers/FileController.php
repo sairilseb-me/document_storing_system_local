@@ -27,6 +27,18 @@ class FileController extends Controller
     }
 
     /**
+     * Search for files
+     * @param string $title
+     * @return \Illuminate\Http\Response
+     */
+
+     public function search($file_name)
+     {
+            $files = File::where('title', 'like', '%'.$file_name.'%')->get();
+            return response()->json(['files' => $files], 200);
+     }
+
+    /**
      * Store a newly created resource in storage.
      */
     public function store(Request $request, FileUploadServices $file_upload)
