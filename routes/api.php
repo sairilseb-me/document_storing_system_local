@@ -28,20 +28,22 @@ Route::post('/logout', [AuthenticatedSessionController::class, 'destroy']);
 Route::group(['middleware' => ['auth:sanctum']], function(){
 
     Route::group(['prefix' => 'role'], function (){
+        Route::get('/search/{role_name}', [RoleController::class, 'search']);
         Route::get('/', [RoleController::class, 'index']);
         Route::post('/', [RoleController::class, 'store']);
         Route::get('/{id}', [RoleController::class, 'show']);
         Route::put('/{id}', [RoleController::class, 'update']);
         Route::delete('/{id}', [RoleController::class, 'destroy']);
+        
     });
 
     Route::group(['prefix' => 'user'], function(){
-        Route::get('/search/{username}', [UserController::class, 'search']);
         Route::get('/', [UserController::class, 'index']);
         Route::post('/', [UserController::class, 'store']);
         Route::get('/{id}', [UserController::class, 'show']);
         Route::put('/{id}', [UserController::class, 'update']);
         Route::delete('/{id}', [UserController::class, 'destroy']);
+        Route::get('/search/{username}', [UserController::class, 'search']);
     });
     
     
@@ -51,6 +53,7 @@ Route::group(['middleware' => ['auth:sanctum']], function(){
         Route::get('/{id}', [OfficeController::class, 'show']);
         Route::put('/{id}', [OfficeController::class, 'update']);
         Route::delete('/{id}', [OfficeController::class, 'destroy']);
+        
     });
     
     Route::group(['prefix' => 'file'], function(){

@@ -16,6 +16,21 @@
         </v-row>
         <v-row>
             <v-col cols="12">
+                <v-card>
+                    <div class="mt-3 d-flex justify-end">
+                        <v-col cols="4">
+                            <v-text-field
+                                v-model="search"
+                                prepend-inner-icon="mdi-magnify"
+                                label="Search"
+                                single-line
+                                hide-details
+                                @update:model-value="searchRoles"
+                            >
+                            </v-text-field>
+                        </v-col>
+                    </div>
+                </v-card>
                 <role-table :items="roles" @edit="editRole" @delete="deleteRole"></role-table>
             </v-col>
         </v-row>
@@ -43,6 +58,7 @@ export default {
         const roles = ref([])
         const selectedRole = ref({})
         const deleteDetails = ref({})
+        const search = ref('')  
 
         const showRoleDialog = () => {
             visible.value = true
@@ -86,6 +102,21 @@ export default {
             getRoles()
         }
 
+        const searchRoles = () => {
+            if (search.value === '') {
+                getRoles()
+            } else {
+                axios.get(`/role/search/${search.value}`)
+                .then(({data}) => {
+                    console.log(data)
+                    roles.value = data.roles
+                })
+                .catch(error => {
+                    console.log(error)
+                })
+            }
+        }
+
         getRoles()
 
         return {
@@ -96,6 +127,7 @@ export default {
             selectedRole,
             deleteDialogVisible,
             deleteDetails,
+            search,
 
             //methods
             showRoleDialog,
@@ -103,6 +135,7 @@ export default {
             editRole,
             deleteRole,
             closeDeleteDialog,
+            searchRoles,
         }
     },
 }
