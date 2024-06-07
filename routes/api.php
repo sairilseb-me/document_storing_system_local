@@ -63,6 +63,7 @@ Route::group(['middleware' => ['auth:sanctum']], function(){
         Route::put('/{id}', [FileController::class, 'update']);
         Route::delete('/{id}', [FileController::class, 'destroy']);
         Route::get('/file-download/{id}', [FileController::class, 'download']);
+        Route::get('/search/{file_name}', [FileController::class, 'search']);
     });
     
     

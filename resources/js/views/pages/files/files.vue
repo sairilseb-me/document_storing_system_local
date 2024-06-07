@@ -11,9 +11,28 @@
             </v-col>
         </v-row>
         <v-row>
-            <v-col>
-                <file-table :files="files" @view="showFileHandler" @delete="deleteFileHandler"></file-table>
+            <v-col cols="12">
+                <v-card>
+                    <div class="mt-3 d-flex justify-end">
+                        <v-col cols="4">
+                            <v-text-field
+                                v-model="search"
+                                prepend-inner-icon="mdi-magnify"
+                                label="Search"
+                                single-line
+                                hide-details
+                                @update:model-value="searchFiles"
+                            ></v-text-field>
+                        </v-col>
+                    </div>
+                    <div>
+                        <v-col>
+                            <file-table :files="files" @view="showFileHandler" @delete="deleteFileHandler"></file-table>
+                        </v-col>
+                    </div>
+                </v-card>
             </v-col>
+            
         </v-row>
         <file-dialog :visible="showFileDialog" @close="closeShowFileDialog"></file-dialog>
         <view-file-dialog :visible="viewFileDialog" :file="sfile" @close="closeViewFileDialog"></view-file-dialog>
@@ -44,6 +63,8 @@ export default {
         const sfile = ref(null)
         const deleteDetails = ref({})
         const deleteDialogVisible = ref(false) 
+        const search = ref('')
+
 
         const closeShowFileDialog = () => {
             showFileDialog.value = false
@@ -81,6 +102,17 @@ export default {
             getFiles()
         }
 
+        const searchFiles = () => {
+            if (search.value === '') {
+                getFiles()
+            } else {
+                axios.get('file/search/' + search.value)
+                .then(({data}) => {
+                    files.value = data.files
+                })
+            }
+        }
+
         getFiles()
 
         return {
@@ -91,6 +123,7 @@ export default {
             viewFileDialog,
             deleteDetails,
             deleteDialogVisible,
+            search,
 
             //methods
             closeShowFileDialog,
@@ -98,6 +131,7 @@ export default {
             showFileHandler,
             deleteFileHandler,
             deleteDialogClose,
+            searchFiles
         }
         
     },
