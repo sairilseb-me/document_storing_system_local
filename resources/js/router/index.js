@@ -58,20 +58,16 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
   const snackbarStore = useGlobalSnackbarStore()
-  if (to.name !== 'login' && !localStorage.getItem('token')) {
+  if (to.name != 'login' && !localStorage.getItem('token')) {
     snackbarStore.setValues({
       show: true,
       message: 'Unauthorized login, please login first.',
       color: 'error'
     })
-    next({ name: 'login' })
+    next({path: '/login'})
   } else {
-     if (to.path == '/login'){
-      next({path: '/'})
-     } else {
-      next()
-     }
-  }
+    next()
+  } 
 }) 
 
 export default router
