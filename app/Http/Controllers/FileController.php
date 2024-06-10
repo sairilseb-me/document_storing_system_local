@@ -6,6 +6,7 @@ use App\Models\File;
 use Illuminate\Http\Request;
 use App\Services\FileUploadServices;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Carbon;
 
 class FileController extends Controller
 {
@@ -43,6 +44,7 @@ class FileController extends Controller
      */
     public function store(Request $request, FileUploadServices $file_upload)
     {
+        
 
         $validate = $request->validate([
             'title' => 'required | string',
@@ -53,7 +55,8 @@ class FileController extends Controller
         ]);
 
         $path = $file_upload->upload($request->file('file'), 'uploads');
-        $date_format = date_format(date_create($validate['date_received']), 'Y-m-d H:i:s');
+        $date = Carbon::parse($request->date_received);
+        $localDate = $date->setTimezone('Asia/Manila')->format('Y-m-d H:i:s');
 
         $file = File::create([
             'title' => $validate['title'],
@@ -61,7 +64,7 @@ class FileController extends Controller
             'user_id' => 1,
             'office_id' => $validate['office_id'],
             'remarks' => $validate['remarks'],
-            'date_received' => $date_format,
+            'date_received' => $localDate,
         ]);
 
         if ($file) return response()->json(['message' => 'File uploaded successfully'], 200);

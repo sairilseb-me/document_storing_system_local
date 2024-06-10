@@ -65,7 +65,6 @@ export default {
 
         const handleFileChange = (e) => {
             file.value = e.target.files[0]
-            console.log(file.value)
         }
 
         const addFile = () => {
