@@ -50,7 +50,7 @@ class FileController extends Controller
             'title' => 'required | string',
             'file' => 'required | file | mimes:doc,docx,pdf,xlsx,xls,ppt,pptx,txt',
             'office_id' => 'required | numeric',
-            'remarks' => 'required | string',
+            'remarks' => 'sometimes | string',
             'date_received' => 'required | date',
         ]);
 
