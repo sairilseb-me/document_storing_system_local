@@ -34,7 +34,6 @@ Route::group(['middleware' => ['auth:sanctum']], function(){
         Route::get('/{id}', [RoleController::class, 'show']);
         Route::put('/{id}', [RoleController::class, 'update']);
         Route::delete('/{id}', [RoleController::class, 'destroy']);
-        
     });
 
     Route::group(['prefix' => 'user'], function(){
