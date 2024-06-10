@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Services\FileUploadServices;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Auth;
 
 class FileController extends Controller
 {
@@ -61,7 +62,7 @@ class FileController extends Controller
         $file = File::create([
             'title' => $validate['title'],
             'path' => $path,
-            'user_id' => 1,
+            'user_id' => Auth::user()->id,
             'office_id' => $validate['office_id'],
             'remarks' => $validate['remarks'],
             'date_received' => $localDate,
