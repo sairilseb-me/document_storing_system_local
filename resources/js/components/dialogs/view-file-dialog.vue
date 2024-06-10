@@ -80,8 +80,7 @@ export default {
             if (props.file && props.file.path){
                 let props_array = props.file.path.split('/')
                 props_array[0] = props_array[0].replace('public', 'storage');
-                console.log(props_array)
-                return import.meta.env.VITE_API_URL + '/' + props_array.join('/')
+                return import.meta.env.VITE_APP_URL + '/' + props_array.join('/')
             }
         })
 

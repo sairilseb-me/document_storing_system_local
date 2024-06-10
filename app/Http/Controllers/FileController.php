@@ -45,8 +45,7 @@ class FileController extends Controller
      */
     public function store(Request $request, FileUploadServices $file_upload)
     {
-        
-
+    
         $validate = $request->validate([
             'title' => 'required | string',
             'file' => 'required | file | mimes:doc,docx,pdf,xlsx,xls,ppt,pptx,txt',
