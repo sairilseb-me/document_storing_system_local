@@ -27,7 +27,7 @@
                     </div>
                     <div>
                         <v-col>
-                            <file-table :files="files" @view="showFileHandler" @delete="deleteFileHandler"></file-table>
+                            <file-table :files="files" @view="showFileHandler" @delete="deleteFileHandler" @changePage="changePage"></file-table>
                         </v-col>
                     </div>
                 </v-card>
@@ -64,23 +64,30 @@ export default {
         const deleteDetails = ref({})
         const deleteDialogVisible = ref(false) 
         const search = ref('')
-
+        const page = ref(1)
 
         const closeShowFileDialog = () => {
             showFileDialog.value = false
             getFiles()
+            search.value = ''
         }
 
         const closeViewFileDialog = () => {
             viewFileDialog.value = false
             getFiles()
+            search.value = ''
         }
 
         const getFiles = () => {
-            axios.get('file')
-            .then(({data}) => {
-                files.value = data.files
+            axios.get('file', {params: {page: page.value} })
+            .then((response) => {
+                files.value = response.data.files
             })
+        }
+
+        const changePage = (value) => {
+            page.value = value
+            getFiles()
         }
 
         const showFileHandler = (file) => {
@@ -131,7 +138,8 @@ export default {
             showFileHandler,
             deleteFileHandler,
             deleteDialogClose,
-            searchFiles
+            searchFiles,
+            changePage
         }
         
     },

@@ -90,10 +90,9 @@ export default {
                 if (value && value.id){
                     file.value = value
                     title.value = value.title
-                    office_id.value = value.office.id
+                    office_id.value = value.office_id
                     date_received.value = value.date_received
                     remarks.value = value.remarks
-                    console.log(file.value)
                 }
                
             }

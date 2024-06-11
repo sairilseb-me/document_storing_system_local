@@ -14,9 +14,14 @@ class FileController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $files = File::with('office')->get();
+        if ($request->page)
+        {
+            $files = File::with('office')->paginate(10, ['*'], 'page', $request->page);
+            return response()->json(['files' => $files], 200);
+        }
+        $files = File::with('office')->paginate(10);
         return response()->json(['files' => $files], 200);
     }
 
@@ -36,7 +41,7 @@ class FileController extends Controller
 
      public function search($file_name)
      {
-            $files = File::where('title', 'like', '%'.$file_name.'%')->get();
+            $files = File::where('title', 'like', '%'.$file_name.'%')->paginate(10);
             return response()->json(['files' => $files], 200);
      }
 
