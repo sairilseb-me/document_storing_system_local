@@ -96,7 +96,7 @@ class FileController extends Controller
         $validate = $request->validate([
             'title' => 'required | string',
             'office_id' => 'required | numeric',
-            'remarks' => 'required | string',
+            'remarks' => 'sometimes | string',
             'date_received' => 'required | date',
         ]);
 
