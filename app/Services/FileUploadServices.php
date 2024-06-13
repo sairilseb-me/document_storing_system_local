@@ -17,12 +17,10 @@ class FileUploadServices
         try {
             $filename = 'ict_' . date('YmdHis'). '_' . (str_replace(' ', '_', $file->getClientOriginalName())) ;
             $path = $file->storeAs(
-                $this->disk . '/' . $directory,
+                $this->disk . '/' . $directory . '/Files/',
                 $filename,
                 'local'
             );
-
-            
 
             return $path;
         } catch (Exception $e)
