@@ -2,9 +2,11 @@
 import avatar1 from '@images/avatars/avatar-1.png'
 import axios from '@axios'
 import { useRouter } from 'vue-router'
+import { useGlobalSnackbarStore } from '@/store/GlobalSnackbar';
 
 
 const router = useRouter()
+const globalSnackbar = useGlobalSnackbarStore()
 
 const handleLogout = () => {
   axios.post('/logout', { 
@@ -15,16 +17,23 @@ const handleLogout = () => {
   })
     .then(response => {
       if (response.status == 200){
-        console.log(response)
         // handle success
         localStorage.removeItem('token')
-        console.log("Success logout!")
         router.push({name: 'login'})
+        globalSnackbar.setValues({
+          show: true,
+          message: 'Logout successful',
+          color: 'success'
+        })
       }
     })
     .catch(error => {
-      console.log(error)
       // handle error
+      globalSnackbar.setValues({
+        show: true,
+        message: 'An error occurred while logging out',
+        color: 'error'
+      })
     })
 
 }
