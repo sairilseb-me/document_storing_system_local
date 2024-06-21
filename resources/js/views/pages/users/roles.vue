@@ -45,6 +45,7 @@ import RoleDialog from '@/components/dialogs/role-dialog.vue'
 import DeleteDialog from '@/components/dialogs/delete-dialog.vue'
 import { ref } from 'vue'
 import axios from '@axios'
+import { useGlobalSnackbarStore } from '@/store/GlobalSnackbar'
 export default {
     components: {
         RoleTable,
@@ -59,6 +60,7 @@ export default {
         const selectedRole = ref({})
         const deleteDetails = ref({})
         const search = ref('')  
+        const globalSnackbar = useGlobalSnackbarStore()
 
         const showRoleDialog = () => {
             visible.value = true
@@ -70,17 +72,16 @@ export default {
         } 
 
         const getRoles = () => {
-            axios.get('/role', {
-                headers: {
-                    Authorization: 'Bearer ' + localStorage.getItem('token'),
-                    Accept: 'application/json',
-                }
-            })
+            axios.get('/role')
             .then(({data}) => {
                 roles.value = data.roles
             })
             .catch(error => {
-                console.log(error)
+                globalSnackbar.setValues({
+                    message: 'Having some problem getting the roles. Please try again later.',
+                    color: 'error',
+                    show: true,
+                })
             })
         }
 
@@ -108,7 +109,6 @@ export default {
             } else {
                 axios.get(`/role/search/${search.value}`)
                 .then(({data}) => {
-                    console.log(data)
                     roles.value = data.roles
                 })
                 .catch(error => {

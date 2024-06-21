@@ -42,7 +42,7 @@
 
 <script>
 
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import axios from '@axios'
 import FileTable from '@/components/tables/file-table.vue'
 import FileDialog from '@/components/dialogs/file-dialog.vue'
@@ -119,6 +119,20 @@ export default {
                 })
             }
         }
+
+        const checkNas = () => {
+            axios.get('/file/check-nas')
+            .then(response => {
+                console.log(response)
+            }).catch(error => {
+                console.log(error)
+            })
+        }
+
+        onMounted(() => {
+            console.log(localStorage.getItem('token'))
+           checkNas()
+        })
 
         getFiles()
 

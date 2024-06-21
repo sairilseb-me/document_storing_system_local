@@ -8,6 +8,7 @@ use App\Services\FileUploadServices;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
+use App\Services\PingNas;
 
 class FileController extends Controller
 {
@@ -135,5 +136,13 @@ class FileController extends Controller
     {
         $file = File::find($id);
         return Storage::download($file->path);
+    }
+
+    public function check_nas()
+    {
+        $ping = new PingNas();
+        $response = $ping->index();
+        if ($response) return response()->json(['message' => 'NAS is online', 'response' => $response], 200);
+        return response()->json(['message' => 'NAS is offline'], 500);
     }
 }

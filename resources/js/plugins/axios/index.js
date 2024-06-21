@@ -1,5 +1,6 @@
 import axios from 'axios'
 import { useGlobalSnackbarStore } from '@/store/GlobalSnackbar'
+import { useRouter } from 'vue-router'
 
 
 
@@ -17,10 +18,9 @@ axiosIns.interceptors.request.use(
             config.headers.Authorization = `Bearer ${token}`
         }
         return config
-    }
-)
+})
 
-axios.interceptors.response.use(
+axiosIns.interceptors.response.use(
     response => response,
     error => {
         const snackbarStore = useGlobalSnackbarStore()
@@ -28,19 +28,28 @@ axios.interceptors.response.use(
             {
                 snackbarStore.setValues({
                     show: true,
-                    message: 'Server Error',
+                    message: 'Having problem connecting to Server. Contact your administrator.',
                     color: 'error'
-                })
+                })  
+                return
             }
         
-        if (error.response.status == 401)
-            {
+        if (error.response.status == 401){
+            if (error.response.data.key && error.response.data.key == 'NAS'){
                 snackbarStore.setValues({
                     show: true,
-                    message: 'Unauthorized login, please login first.',
+                    message: 'Cannot access NAS, please connect to the correct network.',
                     color: 'error'
                 })
-            }
+                localStorage.removeItem('token')
+                window.location.href = '/login'
+
+                return
+            } 
+        
+        }
+            
+       
     }
 )
 
