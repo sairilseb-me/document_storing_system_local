@@ -31,28 +31,7 @@ const upgradeBanner = computed(() => {
           <VIcon icon="bx-menu" />
         </IconBtn>
 
-        <!-- 👉 Search -->
-        <div
-          class="d-flex align-center cursor-pointer"
-          style="user-select: none;"
-        >
-          <!-- 👉 Search Trigger button -->
-          <IconBtn>
-            <VIcon icon="bx-search" />
-          </IconBtn>
-
-          <span class="d-none d-md-flex align-center text-disabled">
-            <span class="me-3">Search</span>
-            <span class="meta-key">&#8984;K</span>
-          </span>
-        </div>
-
         <VSpacer />
-
-        <IconBtn class="me-2">
-          <VIcon icon="bx-bell" />
-        </IconBtn>
-
         <NavbarThemeSwitcher class="me-2" />
 
         <UserProfile />
@@ -76,9 +55,30 @@ const upgradeBanner = computed(() => {
       />
       <VerticalNavLink
         :item="{
-          title: 'Error',
-          icon: 'bx-info-circle',
-          // to: '/no-existence',
+          title: 'Users',
+          icon: 'mdi-account-group',
+          to: '/users',
+        }"
+      />
+      <VerticalNavLink
+        :item="{
+          title: 'Roles',
+          icon: 'mdi-account-settings',
+          to: '/roles',
+        }"
+      />
+      <VerticalNavLink
+        :item="{
+          title: 'Offices',
+          icon: 'mdi-office-building',
+          to: '/offices',
+        }"
+      />
+      <VerticalNavLink
+        :item="{
+          title: 'Files',
+          icon: 'mdi-files',
+          to: '/files',
         }"
       />
     </template>

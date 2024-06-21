@@ -43,6 +43,7 @@ return [
             'visibility' => 'public',
             'throw' => false,
         ],
+    
 
         's3' => [
             'driver' => 's3',
@@ -70,7 +71,7 @@ return [
     */
 
     'links' => [
-        public_path('storage') => storage_path('app/public'),
+        public_path('storage/nas_uploads') => storage_path('app/public/nas_uploads'),
     ],
 
 ];

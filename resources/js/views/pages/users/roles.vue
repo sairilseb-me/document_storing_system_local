@@ -16,6 +16,21 @@
         </v-row>
         <v-row>
             <v-col cols="12">
+                <v-card>
+                    <div class="mt-3 d-flex justify-end">
+                        <v-col cols="4">
+                            <v-text-field
+                                v-model="search"
+                                prepend-inner-icon="mdi-magnify"
+                                label="Search"
+                                single-line
+                                hide-details
+                                @update:model-value="searchRoles"
+                            >
+                            </v-text-field>
+                        </v-col>
+                    </div>
+                </v-card>
                 <role-table :items="roles" @edit="editRole" @delete="deleteRole"></role-table>
             </v-col>
         </v-row>
@@ -30,6 +45,7 @@ import RoleDialog from '@/components/dialogs/role-dialog.vue'
 import DeleteDialog from '@/components/dialogs/delete-dialog.vue'
 import { ref } from 'vue'
 import axios from '@axios'
+import { useGlobalSnackbarStore } from '@/store/GlobalSnackbar'
 export default {
     components: {
         RoleTable,
@@ -43,6 +59,8 @@ export default {
         const roles = ref([])
         const selectedRole = ref({})
         const deleteDetails = ref({})
+        const search = ref('')  
+        const globalSnackbar = useGlobalSnackbarStore()
 
         const showRoleDialog = () => {
             visible.value = true
@@ -59,7 +77,11 @@ export default {
                 roles.value = data.roles
             })
             .catch(error => {
-                console.log(error)
+                globalSnackbar.setValues({
+                    message: 'Having some problem getting the roles. Please try again later.',
+                    color: 'error',
+                    show: true,
+                })
             })
         }
 
@@ -81,6 +103,24 @@ export default {
             getRoles()
         }
 
+        const searchRoles = () => {
+            if (search.value === '') {
+                getRoles()
+            } else {
+                axios.get(`/role/search/${search.value}`)
+                .then(({data}) => {
+                    roles.value = data.roles
+                })
+                .catch(error => {
+                    globalSnackbar.setValues({
+                    message: 'Having some problem searching the roles. Please try again later.',
+                    color: 'error',
+                    show: true,
+                })
+                })
+            }
+        }
+
         getRoles()
 
         return {
@@ -91,6 +131,7 @@ export default {
             selectedRole,
             deleteDialogVisible,
             deleteDetails,
+            search,
 
             //methods
             showRoleDialog,
@@ -98,6 +139,7 @@ export default {
             editRole,
             deleteRole,
             closeDeleteDialog,
+            searchRoles,
         }
     },
 }

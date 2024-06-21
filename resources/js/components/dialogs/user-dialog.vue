@@ -32,6 +32,7 @@
 import { ref, watch } from 'vue'
 import RoleAutocomplete from '@/components/autocompletes/role-autocomplete.vue'
 import axios from '@axios'
+import { useGlobalSnackbarStore } from '@/store/GlobalSnackbar'
 export default {
     components: {
         RoleAutocomplete
@@ -55,6 +56,7 @@ export default {
         const role_id = ref('')
         const showPassword = ref(false)
         const showPasswordElement = ref(true)
+        const globalSnackbar = useGlobalSnackbarStore()
 
         watch(
             () => props.visible,
@@ -85,11 +87,28 @@ export default {
                 role_id: role_id.value
             })
                 .then(response => {
-                    console.log(response)
-                    closeDialog()
+                    if(response.status == 200){
+                        globalSnackbar.setValues({
+                            show: true,
+                            message: 'User saved successfully',
+                            color: 'success'
+                        })
+                        closeDialog()
+                    }else {
+                        globalSnackbar.setValues({
+                            show: true,
+                            message: 'An error occurred while saving user',
+                            color: 'error'
+                        })
+                    }
+                    
                 })
                 .catch(error => {
-                    console.log(error)
+                    globalSnackbar.setValues({
+                            show: true,
+                            message: 'An error occurred while saving user',
+                            color: 'error'
+                        })
                 })
         }
 
@@ -101,11 +120,27 @@ export default {
                 role_id: role_id.value
             })
                 .then(response => {
-                    console.log(response)
-                    closeDialog()
+                    if (response.status == 200) {
+                        globalSnackbar.setValues({
+                            show: true,
+                            message: 'User successfully updated.',
+                            color: 'success'
+                        })
+                        closeDialog()
+                    } else {
+                        globalSnackbar.setValues({
+                            show: true,
+                            message: 'An error occurred while updating user',
+                            color: 'error'
+                        })
+                    }
                 })
                 .catch(error => {
-                    console.log(error)
+                    globalSnackbar.setValues({
+                        show: true,
+                        message: 'An error occurred while updating user',
+                        color: 'error'
+                    })
                 })
         }
 

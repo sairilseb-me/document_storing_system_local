@@ -12,7 +12,25 @@
         </v-row>
         <v-row>
             <v-col cols="12">
-                <user-table :items="users" @edit="handleEdit" @delete="handleDelete"></user-table>
+                <v-card>
+                    <div class="mt-3 d-flex justify-end">
+                        <v-col cols="4">
+                            <v-text-field
+                                v-model="search"
+                                prepend-inner-icon="mdi-magnify"
+                                label="Search"
+                                single-line
+                                hide-details
+                                @update:model-value="searchUsers"
+                            ></v-text-field>
+                        </v-col>
+                    </div>
+                   
+                    <div class="mt-3">
+                        <user-table :items="users" @edit="handleEdit" @delete="handleDelete"></user-table>
+                    </div>
+                </v-card>
+                
             </v-col>
         </v-row>
         <user-dialog :visible="showUserDialog" :user="user" @close="closeUserDialog"></user-dialog>
@@ -26,6 +44,7 @@ import UserTable from '@/components/tables/user-table.vue'
 import UserDialog from '@/components/dialogs/user-dialog.vue'
 import DeleteDialog from '@/components/dialogs/delete-dialog.vue'
 import axios from '@axios'
+import { useGlobalSnackbarStore } from '@/store/GlobalSnackbar'
 export default {
     components: {
         UserTable,
@@ -38,6 +57,8 @@ export default {
         const showUserDialog = ref(false)
         const showDeleteDialog = ref(false)
         const deleteOptions = ref({})
+        const search = ref('')
+        const globalSnackbar = useGlobalSnackbarStore()
 
         const openUserDialog = () => {
             showUserDialog.value = true
@@ -58,6 +79,12 @@ export default {
             axios.get('/user')
             .then(({data}) => {
                 users.value = data.users
+            }).catch(error => {
+                globalSnackbar.setValues({
+                    message: 'Having some problem getting users. Please try again later.',
+                    color: 'error',
+                    show: true,
+                })
             })
         }
 
@@ -76,6 +103,24 @@ export default {
             }
         }
 
+        const searchUsers = () => {
+            if (search.value === '') {
+                getUsers()
+            } else {
+                axios.get(`/user/search/${search.value}`)
+                .then((response) => {
+                    users.value = response.data.users
+                }).catch(error => {
+                    globalSnackbar.setValues({
+                        message: 'Having some problem searching users. Please try again later.',
+                        color: 'error',
+                        show: true,
+                    })
+                
+                })
+            }
+        }
+
         getUsers()
 
         return {
@@ -85,6 +130,7 @@ export default {
             user,
             showDeleteDialog,
             deleteOptions,
+            search,
 
 
             //methods
@@ -93,6 +139,7 @@ export default {
             handleEdit,
             handleDelete,
             closeDeleteDialog,
+            searchUsers,
         }   
         
     },

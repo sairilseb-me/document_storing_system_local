@@ -25,6 +25,19 @@ class UserController extends Controller
     }
 
     /**
+     * Search for a User function
+     * @param string search
+     * @return \Illuminate\Http\Response
+     */
+
+     public function search($search_string)
+     {
+
+        $user = User::where('username', 'LIKE', '%'.$search_string.'%')->get();
+        return response()->json(['users' => $user], 200);
+     }
+
+    /**
      * Store a newly created resource in storage.
      */
     public function store(Request $request)

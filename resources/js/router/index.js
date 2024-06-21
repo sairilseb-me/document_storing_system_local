@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
+import { useGlobalSnackbarStore } from '@/store/GlobalSnackbar'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -34,8 +35,51 @@ const router = createRouter({
     meta: {
       layout: 'default'
     }
-   }
+   },
+   {
+    path: '/offices',
+    name: 'offices',
+    component: () => import('@/views/pages/offices/offices.vue'),
+    meta: {
+      layout: 'default'
+      }
+    },
+    {
+      path: '/files',
+      name: 'files',
+      component: () => import('@/views/pages/files/files.vue'),
+      meta: {
+        layout: 'default'
+      }
+    },
+    {
+      path: '/404',
+      name: 'not-found',
+      component: () => import('@/views/pages/not-found.vue'),
+      meta: {
+        layout: 'blank'
+      }
+    },
+    {
+      path: "/:catchAll(.*)",
+      redirect: "/404",
+    }
   ],
+  
 })
+
+router.beforeEach((to, from, next) => {
+  const snackbarStore = useGlobalSnackbarStore()
+  if (to.name != 'login' && !localStorage.getItem('token')) {
+    snackbarStore.setValues({
+      show: true,
+      message: 'please login first.',
+      color: 'error'
+    })
+    next({path: '/login'})
+  } else {
+    next()
+  } 
+}) 
 
 export default router
