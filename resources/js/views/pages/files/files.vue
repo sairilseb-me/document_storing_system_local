@@ -48,6 +48,7 @@ import FileTable from '@/components/tables/file-table.vue'
 import FileDialog from '@/components/dialogs/file-dialog.vue'
 import ViewFileDialog from '@/components/dialogs/view-file-dialog.vue'
 import DeleteDialog from '@/components/dialogs/delete-dialog.vue'
+import { useGlobalSnackbarStore } from '@/store/GlobalSnackbar'
 export default {
     components: {
         FileTable,
@@ -65,6 +66,7 @@ export default {
         const deleteDialogVisible = ref(false) 
         const search = ref('')
         const page = ref(1)
+        const globalSnackbar = useGlobalSnackbarStore()
 
         const closeShowFileDialog = () => {
             showFileDialog.value = false
@@ -123,14 +125,23 @@ export default {
         const checkNas = () => {
             axios.get('/file/check-nas')
             .then(response => {
-                console.log(response)
+                if (response.data.key == "NAS")
+                {
+                    console.log("NAS is connected")
+                    return
+                }
+
+                console.log("NAS is not connected")
             }).catch(error => {
-                console.log(error)
+                globalSnackbar.setValues({
+                    message: 'Having some problem checking NAS. Please try again later.',
+                    color: 'error',
+                    show: true,
+                })
             })
         }
 
         onMounted(() => {
-            console.log(localStorage.getItem('token'))
            checkNas()
         })
 

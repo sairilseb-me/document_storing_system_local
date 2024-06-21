@@ -44,6 +44,7 @@
 import OfficeDialog from '@/components/dialogs/office-dialog.vue'
 import OfficeTable from '@/components/tables/office-table.vue'
 import DeleteDialog from '@/components/dialogs/delete-dialog.vue'
+import { useGlobalSnackbarStore } from '@/store/GlobalSnackbar'
 import { ref } from 'vue'
 import axios from '@axios'
 export default {
@@ -59,7 +60,7 @@ export default {
         const deleteDetails = ref({})
         const deleteDialogVisible = ref(false)
         const search = ref('')
-
+        const globalSnackbar = useGlobalSnackbarStore()
 
         const closeShowOfficeDialog = () => {
             showOfficeDialog.value = false
@@ -70,6 +71,12 @@ export default {
             axios.get('/office?all')
             .then(({data}) => {
                 offices.value = data.offices
+            }).catch(error => {
+                globalSnackbar.setValues({
+                    message: 'Having some problem fetching the offices. Please try again later.',
+                    color: 'error',
+                    show: true,
+                })
             })
         }
 
@@ -98,6 +105,12 @@ export default {
                 axios.get(`/office/search/${search.value}`)
                 .then(({data}) => {
                     offices.value = data.offices
+                }).catch(error => {
+                    globalSnackbar.setValues({
+                        message: 'Having some problem searching the offices. Please try again later.',
+                        color: 'error',
+                        show: true,
+                    })
                 })
             }
         }
