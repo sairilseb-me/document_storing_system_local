@@ -1,3 +1,5 @@
+import axios from "@axios"
+
 // 👉 IsEmpty
 export const isEmpty = value => {
   if (value === null || value === undefined || value === '')
@@ -28,6 +30,15 @@ export const isToday = date => {
         date.getFullYear() === today.getFullYear()
   /* eslint-enable */
   )
+}
+
+export const pingNAS = () => {
+  axios.get('192.168.200.2')
+  .then(response => {
+    console.log(response)
+  }).catch(error => {
+    console.log(error)
+  })
 }
 
 export const convertTo24Hour =  (time) => {

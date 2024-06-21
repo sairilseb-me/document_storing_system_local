@@ -6,10 +6,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\FileController;
-use App\Models\Role;
 use App\Http\Controllers\AuthenticatedSessionController;
-use App\Http\Middleware\Authenticate;
-use Laravel\Fortify\Fortify;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -25,7 +23,7 @@ use Laravel\Fortify\Fortify;
 
 Route::post('/logout', [AuthenticatedSessionController::class, 'destroy']);
 
-Route::group(['middleware' => ['auth:sanctum']], function(){
+Route::group(['middleware' => ['auth:sanctum', 'checkNas']], function(){
 
     Route::group(['prefix' => 'role'], function (){
         Route::get('/search/{role_name}', [RoleController::class, 'search']);
@@ -57,6 +55,7 @@ Route::group(['middleware' => ['auth:sanctum']], function(){
     });
     
     Route::group(['prefix' => 'file'], function(){
+        Route::get('/check-nas', [FileController::class, 'check_nas']);
         Route::get('/', [FileController::class, 'index']);
         Route::post('/', [FileController::class, 'store']);
         Route::get('/{id}', [FileController::class, 'show']);
@@ -65,9 +64,8 @@ Route::group(['middleware' => ['auth:sanctum']], function(){
         Route::get('/file-download/{id}', [FileController::class, 'download']);
         Route::get('/search/{file_name}', [FileController::class, 'search']);
     });
-    
-    
 });
+
 
 
 

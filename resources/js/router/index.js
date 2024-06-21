@@ -61,7 +61,7 @@ router.beforeEach((to, from, next) => {
   if (to.name != 'login' && !localStorage.getItem('token')) {
     snackbarStore.setValues({
       show: true,
-      message: 'Unauthorized login, please login first.',
+      message: 'please login first.',
       color: 'error'
     })
     next({path: '/login'})
