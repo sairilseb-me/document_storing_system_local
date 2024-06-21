@@ -44,6 +44,7 @@ import UserTable from '@/components/tables/user-table.vue'
 import UserDialog from '@/components/dialogs/user-dialog.vue'
 import DeleteDialog from '@/components/dialogs/delete-dialog.vue'
 import axios from '@axios'
+import { useGlobalSnackbarStore } from '@/store/GlobalSnackbar'
 export default {
     components: {
         UserTable,
@@ -57,6 +58,7 @@ export default {
         const showDeleteDialog = ref(false)
         const deleteOptions = ref({})
         const search = ref('')
+        const globalSnackbar = useGlobalSnackbarStore()
 
         const openUserDialog = () => {
             showUserDialog.value = true
@@ -77,6 +79,12 @@ export default {
             axios.get('/user')
             .then(({data}) => {
                 users.value = data.users
+            }).catch(error => {
+                globalSnackbar.setValues({
+                    message: 'Having some problem getting users. Please try again later.',
+                    color: 'error',
+                    show: true,
+                })
             })
         }
 
@@ -102,6 +110,13 @@ export default {
                 axios.get(`/user/search/${search.value}`)
                 .then((response) => {
                     users.value = response.data.users
+                }).catch(error => {
+                    globalSnackbar.setValues({
+                        message: 'Having some problem searching users. Please try again later.',
+                        color: 'error',
+                        show: true,
+                    })
+                
                 })
             }
         }

@@ -112,7 +112,11 @@ export default {
                     roles.value = data.roles
                 })
                 .catch(error => {
-                    console.log(error)
+                    globalSnackbar.setValues({
+                    message: 'Having some problem searching the roles. Please try again later.',
+                    color: 'error',
+                    show: true,
+                })
                 })
             }
         }
