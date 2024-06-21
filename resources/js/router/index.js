@@ -51,6 +51,18 @@ const router = createRouter({
       meta: {
         layout: 'default'
       }
+    },
+    {
+      path: '/404',
+      name: 'not-found',
+      component: () => import('@/views/pages/not-found.vue'),
+      meta: {
+        layout: 'blank'
+      }
+    },
+    {
+      path: "/:catchAll(.*)",
+      redirect: "/404",
     }
   ],
   
