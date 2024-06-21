@@ -6,7 +6,7 @@ use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 use App\Services\PingNas;
-use Illuminate\Support\Facades\Auth;
+
 
 class CheckNasConnection
 {
