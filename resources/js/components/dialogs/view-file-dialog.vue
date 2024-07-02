@@ -78,6 +78,7 @@ export default {
 
         const returnFilePath = computed(() => {
             if (props.file && props.file.path){
+                console.log(import.meta.env.VITE_APP_URL + '/storage/' + props.file.path)
                 return import.meta.env.VITE_APP_URL + '/storage/' + props.file.path
             }
         })
