@@ -60,7 +60,7 @@ class FileController extends Controller
             'date_received' => 'required | date',
         ]);
 
-        $path = $file_upload->upload($request->file('file'), 'nas_uploads');
+        $path = $file_upload->upload($request->file('file'));
         $date = Carbon::parse($request->date_received);
         $localDate = $date->setTimezone('Asia/Manila')->format('Y-m-d H:i:s');
 

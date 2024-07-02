@@ -66,6 +66,10 @@ Route::group(['middleware' => ['auth:sanctum', 'checkNas']], function(){
     });
 });
 
+Route::get('/test', function(){
+    return env('NAS_PATH');
+});
+
 
 
 

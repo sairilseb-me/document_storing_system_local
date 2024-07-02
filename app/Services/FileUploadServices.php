@@ -10,16 +10,16 @@ class FileUploadServices
 {
     use Utils;
     
-    private $disk = 'public';
+    private $disk = 'Files';
 
-    public function upload(UploadedFile $file, $directory = 'uploads')
+    public function upload(UploadedFile $file)
     {
         try {
             $filename = 'ict_' . date('YmdHis'). '_' . (str_replace(' ', '_', $file->getClientOriginalName())) ;
             $path = $file->storeAs(
-                $this->disk . '/' . $directory . '/Files/',
+                $this->disk,
                 $filename,
-                'local'
+                'nas'
             );
 
             return $path;

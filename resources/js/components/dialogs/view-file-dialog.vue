@@ -78,9 +78,8 @@ export default {
 
         const returnFilePath = computed(() => {
             if (props.file && props.file.path){
-                let props_array = props.file.path.split('/')
-                props_array[0] = props_array[0].replace('public', 'storage');
-                return import.meta.env.VITE_APP_URL + '/' + props_array.join('/')
+                console.log(import.meta.env.VITE_APP_URL + '/storage/' + props.file.path)
+                return import.meta.env.VITE_APP_URL + '/storage/' + props.file.path
             }
         })
 
