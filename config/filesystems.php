@@ -43,6 +43,12 @@ return [
             'visibility' => 'public',
             'throw' => false,
         ],
+
+        'nas' => [
+            'driver' => 'local',
+            'root' => env('NAS_PATH'),
+            'throw' => false,
+        ],
     
 
         's3' => [
@@ -71,7 +77,7 @@ return [
     */
 
     'links' => [
-        public_path('storage/nas_uploads') => storage_path('app/public/nas_uploads'),
+        public_path('/storage/nas_uploads') => env('NAS_PATH').'/Files',
     ],
 
 ];
