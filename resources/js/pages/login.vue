@@ -4,6 +4,7 @@ import logo from '@images/logo.svg?raw'
 import axios from '@axios'
 import {useRouter} from 'vue-router'  
 import {onMounted, ref} from 'vue'
+import { useGlobalSnackbarStore } from '@/store/GlobalSnackbar'
 const form = ref({
   username: '',
   password: '',
@@ -11,6 +12,7 @@ const form = ref({
 })
 
 const router = useRouter() 
+const globalSnackBar = useGlobalSnackbarStore()
 
 const handleLogin = () => {
   axios.post('/login', form.value)
@@ -19,18 +21,19 @@ const handleLogin = () => {
         // handle success
         localStorage.setItem('token', response.data.token)
         router.push({name: 'dashboard'})
+      }else {
+        globalSnackBar.setValues({
+          show: true,
+          color: 'error',
+          message: 'Invalid username or password'
+        })
       }
     })
     .catch(error => {
       console.log(error)
-      // handle error
     })
 
 }
-
-onMounted(() => {
-  console.log(localStorage.getItem('token'))
-})
 
 const isPasswordVisible = ref(false)
 </script>
