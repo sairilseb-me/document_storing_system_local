@@ -3,13 +3,12 @@
         v-model="globalSnackbar.show"
         vertical
         :color="globalSnackbar.color"
+        close-on-content-click
+        location="top right"
     >
-    <div class="d-flex justify-end align-center">
-        
-    </div>
-    <div class="d-flex justify-center align-center">
-        {{ globalSnackbar.message }}
-    </div>
+        <div class="w-100">
+            <p class="text-center">{{ globalSnackbar.message }}</p> 
+        </div>
     </v-snackbar>
 </template>
 
