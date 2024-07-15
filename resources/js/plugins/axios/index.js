@@ -33,22 +33,6 @@ axiosIns.interceptors.response.use(
                 })  
                 return
             }
-        
-        if (error.response.status == 401){
-            if (error.response.data.key && error.response.data.key == 'NAS'){
-                snackbarStore.setValues({
-                    show: true,
-                    message: 'Cannot access NAS, please connect to the correct network.',
-                    color: 'error'
-                })
-                localStorage.removeItem('token')
-                window.location.href = '/login'
-
-                return
-            } 
-        
-        }
-            
        
     }
 )

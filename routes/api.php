@@ -23,7 +23,7 @@ use App\Http\Controllers\AuthenticatedSessionController;
 
 Route::post('/logout', [AuthenticatedSessionController::class, 'destroy']);
 
-Route::group(['middleware' => ['auth:sanctum', 'checkNas']], function(){
+Route::group(['middleware' => ['auth:sanctum']], function(){
 
     Route::group(['prefix' => 'role'], function (){
         Route::get('/search/{role_name}', [RoleController::class, 'search']);
