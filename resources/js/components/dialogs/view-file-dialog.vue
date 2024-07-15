@@ -19,13 +19,13 @@
                 <div v-if="isFilePDF && !isEdit">
                     <iframe :src="returnFilePath" width="100%" height="800px" frameborder="0"></iframe>
                 </div>
-                <v-btn v-else color="primary" @click="downloadFile">Download</v-btn>
+                <v-btn v-else color="primary" @click="downloadFile" :loading="loading">Download</v-btn>
             </v-card-text>
             <v-card-actions>
                 <v-btn color="secondary" @click="closeDialog">Close</v-btn>
                 <v-spacer></v-spacer>
                 <v-btn v-if="!isEdit" color="warning" @click="isEdit = !isEdit">Edit</v-btn>
-                <v-btn v-else color="primary" @click="updateFile">Update</v-btn>
+                <v-btn v-else color="primary" @click="updateFile" :loading=loading>Update</v-btn>
             </v-card-actions>
         </v-card>
     </v-dialog>
@@ -61,6 +61,7 @@ export default {
         const date_received = ref(null)
         const remarks = ref(null)
         const globalSnackbar = useGlobalSnackbarStore()
+        const loading = ref(false)
         
         watch(
             () => props.visible,
@@ -98,6 +99,7 @@ export default {
         )
 
         const updateFile = () => {
+            loading.value = true
             axios.put(`/file/${props.file.id}`, {
                 title: title.value,
                 office_id: office_id.value,
@@ -116,7 +118,9 @@ export default {
             })
             .catch(error => {
                 console.log(error)
-            })
+            }).finally(() => {
+                loading.value = false
+            })  
         }
     
         const downloadFile = async() => {
@@ -137,6 +141,8 @@ export default {
             }catch (error){
                 console.log(error)
             }
+
+            loading.value = false
         }
 
         const closeDialog = () => {
@@ -153,6 +159,7 @@ export default {
             office_id,
             remarks,
             date_received,
+            loading,
 
             //compputed
             isFilePDF,
