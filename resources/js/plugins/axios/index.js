@@ -1,8 +1,5 @@
 import axios from 'axios'
 import { useGlobalSnackbarStore } from '@/store/GlobalSnackbar'
-import { useRouter } from 'vue-router'
-
-
 
 const axiosIns = axios.create({
     baseURL: 'http://localhost:8000/api',

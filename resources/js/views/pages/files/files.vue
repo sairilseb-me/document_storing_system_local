@@ -122,28 +122,6 @@ export default {
             }
         }
 
-        const checkNas = () => {
-            axios.get('/file/check-nas')
-            .then(response => {
-                if (response.data.key == "NAS")
-                {
-                    console.log("NAS is connected")
-                    return
-                }
-
-                console.log("NAS is not connected")
-            }).catch(error => {
-                globalSnackbar.setValues({
-                    message: 'Having some problem checking NAS. Please try again later.',
-                    color: 'error',
-                    show: true,
-                })
-            })
-        }
-
-        onMounted(() => {
-           checkNas()
-        })
 
         getFiles()
 
