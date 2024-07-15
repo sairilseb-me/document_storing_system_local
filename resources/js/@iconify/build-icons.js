@@ -68,6 +68,10 @@ const sources = {
                 'form-select',
                 'account-cog-outline',
                 'laptop',
+                'eye-outline',
+                'trash',
+                'pencil',
+
             ],
         },
         // Custom file with only few icons
