@@ -20,7 +20,7 @@
                 <v-card-actions>
                     <v-spacer></v-spacer>
                     <v-btn color="secondary" @click="closeDialog">Close</v-btn>
-                    <v-btn color="primary" type="submit">Add File</v-btn>
+                    <v-btn color="primary" type="submit" :loading="loading">Add File</v-btn>
                 </v-card-actions>
             </v-form>
         </v-card>
@@ -55,6 +55,7 @@ export default {
         const selectedDate = ref(null)
         const selectedTime = ref(null)
         const globalSnackbar = useGlobalSnackbarStore()
+        const loading = ref(false)
        
         watch(
             () => props.visible,
@@ -70,6 +71,7 @@ export default {
         const addFile = () => {
             let newDate = null
             let formData = new FormData()
+            loading.value = true
             if (selectedDate.value) {
                 if (selectedTime.value)
                 {
@@ -110,7 +112,9 @@ export default {
                         color: 'error'
                     })
                 }
-            })
+            }).finally(() => {
+                loading.value = false
+            }) 
         }
 
         const closeDialog = () => {
@@ -136,6 +140,7 @@ export default {
             remarks,
             selectedDate,
             selectedTime,
+            loading,
 
             //methods
             closeDialog,
