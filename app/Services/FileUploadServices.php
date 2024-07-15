@@ -19,7 +19,7 @@ class FileUploadServices
             $path = $file->storeAs(
                 $this->disk,
                 $filename,
-                'nas'
+                'local'
             );
 
             return $path;

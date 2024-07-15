@@ -77,7 +77,7 @@ return [
     */
 
     'links' => [
-        public_path('/storage/nas_uploads') => env('NAS_PATH').'/Files',
+        public_path('/storage/Files') => storage_path('app/Files'),
     ],
 
 ];
