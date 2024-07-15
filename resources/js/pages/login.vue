@@ -1,6 +1,4 @@
 <script setup>
-import AuthProvider from '@/views/pages/authentication/AuthProvider.vue'
-import logo from '@images/logo.svg?raw'
 import axios from '@axios'
 import {useRouter} from 'vue-router'  
 import {onMounted, ref} from 'vue'
@@ -15,22 +13,31 @@ const router = useRouter()
 const globalSnackBar = useGlobalSnackbarStore()
 
 const handleLogin = () => {
+
+  if (!form.value.username || !form.value.password) {
+    globalSnackBar.setValues({
+      show: true,
+      color: 'error',
+      message: 'Please fill in all fields'
+    })
+    return
+  }
   axios.post('/login', form.value)
     .then(response => {
       if (response.status == 200){
         // handle success
         localStorage.setItem('token', response.data.token)
+        localStorage.setItem('user', JSON.stringify(response.data.user))
         router.push({name: 'dashboard'})
-      }else {
-        globalSnackBar.setValues({
-          show: true,
-          color: 'error',
-          message: 'Invalid username or password'
-        })
       }
     })
     .catch(error => {
       console.log(error)
+      globalSnackBar.setValues({
+          show: true,
+          color: 'error',
+          message: 'Invalid username or password'
+        })
     })
 
 }

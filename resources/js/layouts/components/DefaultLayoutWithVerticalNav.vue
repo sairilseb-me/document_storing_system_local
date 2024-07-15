@@ -16,6 +16,14 @@ const vuetifyTheme = useTheme()
 const upgradeBanner = computed(() => {
   return vuetifyTheme.global.name.value === 'light' ? upgradeBannerLight : upgradeBannerDark
 })
+
+
+const user = ref(null)
+
+onMounted(() => {
+  user.value = JSON.parse(localStorage.getItem('user'))
+  
+})
 </script>
 
 <template>
@@ -54,6 +62,7 @@ const upgradeBanner = computed(() => {
         }"
       />
       <VerticalNavLink
+        v-if="user && user.role_id == 1"
         :item="{
           title: 'Users',
           icon: 'mdi-account-group',
@@ -61,6 +70,7 @@ const upgradeBanner = computed(() => {
         }"
       />
       <VerticalNavLink
+         v-if="user && user.role_id == 1"
         :item="{
           title: 'Roles',
           icon: 'mdi-account-settings',
