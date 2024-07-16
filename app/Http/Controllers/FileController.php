@@ -71,16 +71,18 @@ class FileController extends Controller
 
         if ($validate->fails()) return response()->json(['message' => $validate->errors()], 422);
 
+        $validated = $validate->validated();
+
         $path = $file_upload->upload($request->file('file'));
         $date = Carbon::parse($request->date_received);
         $localDate = $date->setTimezone('Asia/Manila')->format('Y-m-d H:i:s');
 
         $file = File::create([
-            'title' => $validate['title'],
+            'title' => $validated['title'],
             'path' => $path,
             'user_id' => Auth::user()->id,
-            'office_id' => $validate['office_id'],
-            'remarks' => $validate['remarks'],
+            'office_id' => $validated['office_id'],
+            'remarks' => $validated['remarks'],
             'date_received' => $localDate,
         ]);
 
