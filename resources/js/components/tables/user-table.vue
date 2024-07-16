@@ -6,6 +6,7 @@
                     <v-data-table
                         :headers="headers"
                         :items="items"
+                        :loading="tableLoading"
                     >
                         <template #[`item.role_id`]="{ item }">
                             {{ getRoleName(item.selectable.role_id) }}
@@ -57,6 +58,8 @@ export default {
             }
         ])
 
+        const tableLoading = ref(false)
+
         const roles = ref([])
 
         const getRoleName =(id) => {
@@ -65,12 +68,15 @@ export default {
         }
 
         const getRoles = () => {
+            tableLoading.value = true
             axios.get('/role')
             .then(({data}) => {
                 roles.value = data.roles
             })
             .catch(error => {
                 console.log(error)
+            }).finally(() => {
+                tableLoading.value = false
             })
         }
 
@@ -87,6 +93,7 @@ export default {
         return {
             //variables
             headers,
+            tableLoading,
 
             //computed
             getRoleName,

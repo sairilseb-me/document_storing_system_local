@@ -31,7 +31,7 @@
                         </v-col>
                     </div>
                 </v-card>
-                <role-table :items="roles" @edit="editRole" @delete="deleteRole"></role-table>
+                <role-table :items="roles" :loading="tableLoading" @edit="editRole" @delete="deleteRole"></role-table>
             </v-col>
         </v-row>
         <role-dialog :visible="visible" @close="closeRoleDialog" :role="selectedRole"></role-dialog>
@@ -61,6 +61,7 @@ export default {
         const deleteDetails = ref({})
         const search = ref('')  
         const globalSnackbar = useGlobalSnackbarStore()
+        const tableLoading = ref(false)
 
         const showRoleDialog = () => {
             visible.value = true
@@ -72,6 +73,7 @@ export default {
         } 
 
         const getRoles = () => {
+            tableLoading.value = true
             axios.get('/role')
             .then(({data}) => {
                 roles.value = data.roles
@@ -82,7 +84,9 @@ export default {
                     color: 'error',
                     show: true,
                 })
-            })
+            }).finally(() => {
+                tableLoading.value = false
+            }) 
         }
 
         const editRole = (item) => {
@@ -107,6 +111,7 @@ export default {
             if (search.value === '') {
                 getRoles()
             } else {
+                tableLoading.value = true
                 axios.get(`/role/search/${search.value}`)
                 .then(({data}) => {
                     roles.value = data.roles
@@ -116,6 +121,8 @@ export default {
                     message: 'Having some problem searching the roles. Please try again later.',
                     color: 'error',
                     show: true,
+                }).finally(() => {
+                    tableLoading.value = false
                 })
                 })
             }
@@ -132,6 +139,7 @@ export default {
             deleteDialogVisible,
             deleteDetails,
             search,
+            tableLoading,
 
             //methods
             showRoleDialog,
