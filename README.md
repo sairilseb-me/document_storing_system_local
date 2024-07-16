@@ -5,13 +5,13 @@
 ### Step 1: Clone the Repository
 
 ```bash
-git clone git@github.com:sairilseb-me/document_storing_system.git
+git clone git@github.com:sairilseb-me/document_storing_system_local.git
 ```
 
 ### Step 2: Navigate into the Project Directory
 
 ```bash
-cd document_storing_system
+cd document_storing_system_local
 ```
 ### Step 3: Install PHP Dependencies
 
@@ -76,16 +76,9 @@ php artisan db:seed --class=UserSeeder
 Ensure you are connected to the same network as the NAS.
 
 ### Step 11: Create a Symlink for Storage
-For Windows:
 
-```bash
-mklink /D "system path\public\storage" "\\NAS Path"
 ```
-
-For Mac or Unix-based OS:
-
-```bash
-ln -s "//NAS Path" "system path/public/storage"
+php artisan storage:link
 ```
 
 ### Step 12: Serve the Application
