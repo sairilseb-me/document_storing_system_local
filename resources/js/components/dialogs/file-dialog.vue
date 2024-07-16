@@ -105,14 +105,11 @@ export default {
                     })
                     resetValues()
                     closeDialog()
-                }else{
-                    globalSnackbar.setValues({
-                        show: true,
-                        message: 'An error occurred while adding file',
-                        color: 'error'
-                    })
                 }
-            }).finally(() => {
+            }).catch(error => {
+                console.log(error)
+            })
+            .finally(() => {
                 loading.value = false
             }) 
         }
