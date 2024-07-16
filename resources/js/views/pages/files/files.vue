@@ -27,7 +27,7 @@
                     </div>
                     <div>
                         <v-col>
-                            <file-table :files="files" @view="showFileHandler" @delete="deleteFileHandler" @changePage="changePage"></file-table>
+                            <file-table :files="files" :loading="tableLoading" @view="showFileHandler" @delete="deleteFileHandler" @changePage="changePage"></file-table>
                         </v-col>
                     </div>
                 </v-card>
@@ -67,6 +67,7 @@ export default {
         const search = ref('')
         const page = ref(1)
         const globalSnackbar = useGlobalSnackbarStore()
+        const tableLoading = ref(false)
 
         const closeShowFileDialog = () => {
             showFileDialog.value = false
@@ -81,9 +82,12 @@ export default {
         }
 
         const getFiles = () => {
+            tableLoading.value = true
             axios.get('file', {params: {page: page.value} })
             .then((response) => {
                 files.value = response.data.files
+            }).finally(() => {
+                tableLoading.value = false
             })
         }
 
@@ -112,12 +116,16 @@ export default {
         }
 
         const searchFiles = () => {
+            
             if (search.value === '') {
                 getFiles()
             } else {
+                tableLoading.value = true
                 axios.get('file/search/' + search.value)
                 .then(({data}) => {
                     files.value = data.files
+                }).finally(() => {
+                    tableLoading.value = false
                 })
             }
         }
@@ -134,6 +142,7 @@ export default {
             deleteDetails,
             deleteDialogVisible,
             search,
+            tableLoading,
 
             //methods
             closeShowFileDialog,

@@ -5,6 +5,7 @@
                 :headers="headers"
                 :items="files.data"
                 :hide-default-footer = "true"
+                :loading="loading"
             >
                 <template #[`item.actions`] = "{item}">
                     <v-icon color="secondary" @click="viewFileHandler(item.selectable)">mdi-eye-outline</v-icon>
@@ -34,6 +35,7 @@
 <script>
 
 import { ref, watch } from 'vue'
+import { load } from 'webfontloader';
 
 export default {
     props: {
@@ -41,6 +43,10 @@ export default {
             type: Object,
             default: {}
         },
+        loading: {
+            type: Boolean,
+            default: false
+        }
     },
     setup(props, {emit}) {
         const headers = ref([

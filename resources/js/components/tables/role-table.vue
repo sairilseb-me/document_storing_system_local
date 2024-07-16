@@ -4,6 +4,7 @@
             <v-data-table
                 :headers="headers"
                 :items="items"
+                :loading="loading"
             >
                 <template #[`item.created_at`]="{ item }">
                     {{ formattedDate(item.columns.created_at) }}
@@ -18,13 +19,17 @@
 </template>
 
 <script>
-import { computed, ref } from 'vue';
+import { computed, ref, watch } from 'vue';
 import { formatDate } from '@/@core/utils/formatters';
 export default {
     props: {
         items: {
             type: Array,
             default: () => []
+        },
+        loading: {
+            type: Boolean,
+            default: false
         }
     },
     setup(_, {emit}) {
@@ -42,6 +47,7 @@ export default {
                 key: 'actions',
             }
         ]
+
 
         const formattedDate = (date) => {
             return formatDate(date)

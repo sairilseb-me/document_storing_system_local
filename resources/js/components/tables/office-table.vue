@@ -6,6 +6,7 @@
                 :items="offices"
                 item-title="name"
                 item-value="id"
+                :loading="loading"
             >
                 <!-- <template v-slot:[`item.name`] = "{item}">
                     {{ item.selectable.id }}
@@ -29,6 +30,10 @@ export default {
         offices: {
             type: Array,
             default: () => []
+        },
+        loading: {
+            type: Boolean,
+            default: false
         }
     },
     setup(_, {emit}) {

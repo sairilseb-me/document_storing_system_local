@@ -27,7 +27,7 @@
                     </div>
                     <div>
                         <v-col>
-                            <office-table :offices="offices" @edit="editOffice" @delete="deleteOffice"></office-table>
+                            <office-table :offices="offices" :loading="tableLoading" @edit="editOffice" @delete="deleteOffice"></office-table>
                         </v-col>
                     </div>
                 </v-card>
@@ -61,6 +61,7 @@ export default {
         const deleteDialogVisible = ref(false)
         const search = ref('')
         const globalSnackbar = useGlobalSnackbarStore()
+        const tableLoading = ref(false)
 
         const closeShowOfficeDialog = () => {
             showOfficeDialog.value = false
@@ -68,6 +69,7 @@ export default {
         }
 
         const getOffices = () => {
+            tableLoading.value = true
             axios.get('/office?all')
             .then(({data}) => {
                 offices.value = data.offices
@@ -77,6 +79,8 @@ export default {
                     color: 'error',
                     show: true,
                 })
+            }).finally(() => {
+                tableLoading.value = false
             })
         }
 
@@ -99,6 +103,7 @@ export default {
         }
 
         const searchOffices = () => {
+            tableLoading.value = true
             if (search.value == ''){
                 getOffices()
             } else {
@@ -111,6 +116,8 @@ export default {
                         color: 'error',
                         show: true,
                     })
+                }).finally(() => {
+                    tableLoading.value = false
                 })
             }
         }
@@ -125,6 +132,7 @@ export default {
             deleteDetails,
             deleteDialogVisible,
             search,
+            tableLoading,
 
 
             //methods
