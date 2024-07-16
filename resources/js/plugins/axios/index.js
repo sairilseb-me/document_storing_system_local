@@ -1,8 +1,5 @@
 import axios from 'axios'
 import { useGlobalSnackbarStore } from '@/store/GlobalSnackbar'
-import { useRouter } from 'vue-router'
-
-
 
 const axiosIns = axios.create({
     baseURL: 'http://localhost:8000/api',
@@ -33,22 +30,16 @@ axiosIns.interceptors.response.use(
                 })  
                 return
             }
-        
-        if (error.response.status == 401){
-            if (error.response.data.key && error.response.data.key == 'NAS'){
-                snackbarStore.setValues({
-                    show: true,
-                    message: 'Cannot access NAS, please connect to the correct network.',
-                    color: 'error'
-                })
-                localStorage.removeItem('token')
-                window.location.href = '/login'
 
-                return
-            } 
-        
+        if (error.response.status == 422){
+            snackbarStore.setValues({
+                show: true,
+                message: 'Please upload a valid file.',
+                color: 'error'
+            })
+
+            return
         }
-            
        
     }
 )

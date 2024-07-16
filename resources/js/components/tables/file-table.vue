@@ -97,7 +97,6 @@ export default {
         }
 
         const viewFileHandler = (file) => {
-            console.log(file)
             emit('view', file)
         }
 

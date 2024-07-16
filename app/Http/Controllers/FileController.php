@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use App\Services\PingNas;
+use Illuminate\Support\Facades\Validator;
 
 class FileController extends Controller
 {
@@ -52,13 +53,23 @@ class FileController extends Controller
     public function store(Request $request, FileUploadServices $file_upload)
     {
     
-        $validate = $request->validate([
+        // $validate = $request->validate([
+        //     'title' => 'required | string',
+        //     'file' => 'required | file | mimes:doc,docx,pdf,xlsx,xls,ppt,pptx,txt',
+        //     'office_id' => 'required | numeric',
+        //     'remarks' => 'sometimes | string',
+        //     'date_received' => 'required | date',
+        // ]);
+
+        $validate = Validator::make($request->all(), [
             'title' => 'required | string',
             'file' => 'required | file | mimes:doc,docx,pdf,xlsx,xls,ppt,pptx,txt',
             'office_id' => 'required | numeric',
             'remarks' => 'sometimes | string',
             'date_received' => 'required | date',
         ]);
+
+        if ($validate->fails()) return response()->json(['message' => $validate->errors()], 422);
 
         $path = $file_upload->upload($request->file('file'));
         $date = Carbon::parse($request->date_received);

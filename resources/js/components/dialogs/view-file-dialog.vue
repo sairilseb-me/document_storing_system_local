@@ -1,34 +1,56 @@
 <template>
-    <v-dialog 
-        max-width="800px"
-        v-model="visible"
-    >
-        <v-card>
-            <v-card-title class="d-flex justify-center items-center mt-3">
-                View File
-                <v-spacer></v-spacer>
-                <v-icon @click="closeDialog">
-                    mdi-close
-                </v-icon>
-            </v-card-title>
-            <v-card-text>
-                <v-text-field class="mb-3" label="Title" v-model="title" :readonly="!isEdit"></v-text-field>
-                <office-autocomplete v-model="office_id" class="mb-3" :readonly="!isEdit"></office-autocomplete>
-                <v-text-field class="mb-3" label="Date Received" v-model="date_received" :readonly="!isEdit"></v-text-field>
-                <v-textarea class="mb-3" label="Remarks" v-model="remarks" :readonly="!isEdit"></v-textarea>
-                <div v-if="isFilePDF && !isEdit">
-                    <iframe :src="returnFilePath" width="100%" height="800px" frameborder="0"></iframe>
-                </div>
-                <v-btn v-else color="primary" @click="downloadFile" :loading="loading">Download</v-btn>
-            </v-card-text>
-            <v-card-actions>
-                <v-btn color="secondary" @click="closeDialog">Close</v-btn>
-                <v-spacer></v-spacer>
-                <v-btn v-if="!isEdit" color="warning" @click="isEdit = !isEdit">Edit</v-btn>
-                <v-btn v-else color="primary" @click="updateFile" :loading=loading>Update</v-btn>
-            </v-card-actions>
-        </v-card>
-    </v-dialog>
+    <div>
+        <v-dialog 
+            max-width="800px"
+            v-model="visible"
+            z-index=1
+        >
+            <v-card>
+                <v-card-title class="d-flex justify-center items-center mt-3">
+                    View File
+                    <v-spacer></v-spacer>
+                    <v-icon @click="closeDialog">
+                        mdi-close
+                    </v-icon>
+                </v-card-title>
+                <v-card-text>
+                    <v-text-field class="mb-3" label="Title" v-model="title" :readonly="!isEdit"></v-text-field>
+                    <office-autocomplete v-model="office_id" class="mb-3" :readonly="!isEdit"></office-autocomplete>
+                    <v-text-field class="mb-3" label="Date Received" v-model="date_received" :readonly="!isEdit"></v-text-field>
+                    <v-textarea class="mb-3" label="Remarks" v-model="remarks" :readonly="!isEdit"></v-textarea>
+                    <div v-if="isFilePDF && !isEdit">
+                       
+                        <v-btn color="primary" @click="showPDFDialog = true">View PDF File</v-btn>
+                    </div>
+                    <v-btn v-else color="primary" @click="downloadFile" :loading="loading">Download</v-btn>
+                </v-card-text>
+                <v-card-actions>
+                    <v-btn color="secondary" @click="closeDialog">Close</v-btn>
+                    <v-spacer></v-spacer>
+                    <v-btn v-if="!isEdit" color="warning" @click="isEdit = !isEdit">Edit</v-btn>
+                    <v-btn v-else color="primary" @click="updateFile" :loading=loading>Update</v-btn>
+                </v-card-actions>
+            </v-card>
+        </v-dialog>
+        <v-dialog max-width="800" v-model="showPDFDialog" z-index=2>
+            <v-card>
+                <v-card-title class="d-flex justify-center items-center mt-3">
+                    View PDF
+                    <v-spacer></v-spacer>
+                    <v-icon @click="showPDFDialog = false">
+                        mdi-close
+                    </v-icon>
+                </v-card-title>
+                <v-card-text>
+                     <iframe :src="returnFilePath" width="100%" height="800px" frameborder="0"></iframe>
+                </v-card-text>
+                <v-card-actions>
+                    <v-btn color="secondary" @click="showPDFDialog = false">Close</v-btn>
+                </v-card-actions>
+            </v-card>
+        </v-dialog>
+    </div>
+    
 </template>
 
 <script>
@@ -36,9 +58,11 @@ import { ref, watch, computed } from 'vue'
 import axios from '@axios'
 import OfficeAutocomplete from '@/components/autocompletes/office-autocomplete.vue'
 import { useGlobalSnackbarStore } from '@/store/GlobalSnackbar'
+import ViewPdfDialog from '@/components/dialogs/view-pdf-dialog.vue'
 export default {
     components: {
         OfficeAutocomplete,
+        ViewPdfDialog,
     },
     props: {
         visible: {
@@ -62,6 +86,7 @@ export default {
         const remarks = ref(null)
         const globalSnackbar = useGlobalSnackbarStore()
         const loading = ref(false)
+        const showPDFDialog = ref(false)    
         
         watch(
             () => props.visible,
@@ -69,7 +94,6 @@ export default {
                 visible.value = value
             }
         )
-
 
         const isFilePDF = computed(() => {
             if (props.file && props.file.path){
@@ -160,6 +184,7 @@ export default {
             remarks,
             date_received,
             loading,
+            showPDFDialog,
 
             //compputed
             isFilePDF,

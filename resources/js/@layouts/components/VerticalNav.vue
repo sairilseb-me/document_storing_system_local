@@ -1,7 +1,7 @@
 <script setup>
 import { PerfectScrollbar } from 'vue3-perfect-scrollbar'
 import { useDisplay } from 'vuetify'
-import logo from '@images/logo.svg?raw'
+import logo from '@images/guimaras-logo.png'
 
 const props = defineProps({
   tag: {
@@ -58,10 +58,6 @@ const handleNavScroll = evt => {
           to="/"
           class="app-logo d-flex align-center gap-x-3 app-title-wrapper"
         >
-          <div
-            class="d-flex"
-            v-html="logo"
-          />
 
           <h5 class="leading-normal">
             Document Tracking System
