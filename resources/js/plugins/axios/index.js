@@ -30,6 +30,16 @@ axiosIns.interceptors.response.use(
                 })  
                 return
             }
+
+        if (error.response.status == 422){
+            snackbarStore.setValues({
+                show: true,
+                message: 'Please upload a valid file.',
+                color: 'error'
+            })
+
+            return
+        }
        
     }
 )

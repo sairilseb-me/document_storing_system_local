@@ -8,7 +8,7 @@
                         :items="items"
                     >
                         <template #[`item.role_id`]="{ item }">
-                            {{ getRoleName(item.selectable.id) }}
+                            {{ getRoleName(item.selectable.role_id) }}
                         </template>
 
                         <template #[`item.actions`]="{item}">
@@ -59,7 +59,7 @@ export default {
 
         const roles = ref([])
 
-        const getRoleName = (id) => {
+        const getRoleName =(id) => {
             const role = roles.value.find(r => r.id == id)
             return role ? role.name : ''
         }
