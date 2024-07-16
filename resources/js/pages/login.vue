@@ -3,17 +3,20 @@ import axios from '@axios'
 import {useRouter} from 'vue-router'  
 import {onMounted, ref} from 'vue'
 import { useGlobalSnackbarStore } from '@/store/GlobalSnackbar'
+import { load } from 'webfontloader';
 const form = ref({
   username: '',
   password: '',
   remember: false,
 })
 
+const loading = ref(false)
+
 const router = useRouter() 
 const globalSnackBar = useGlobalSnackbarStore()
 
 const handleLogin = () => {
-
+  loading.value = true
   if (!form.value.username || !form.value.password) {
     globalSnackBar.setValues({
       show: true,
@@ -38,6 +41,8 @@ const handleLogin = () => {
           color: 'error',
           message: 'Invalid username or password'
         })
+    }).finally(() => {
+      loading.value = false
     })
 
 }
@@ -87,6 +92,7 @@ const isPasswordVisible = ref(false)
               <VBtn
                 block
                 type="submit"
+                :loading="loading"
               >
                 Login
               </VBtn>
