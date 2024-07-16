@@ -1,5 +1,5 @@
 <script setup>
-import avatar1 from '@images/avatars/avatar-1.png'
+import avatar1 from '@images/avatars/avatar-default.jpg'
 import axios from '@axios'
 import { useRouter } from 'vue-router'
 import { useGlobalSnackbarStore } from '@/store/GlobalSnackbar';
@@ -7,6 +7,8 @@ import { useGlobalSnackbarStore } from '@/store/GlobalSnackbar';
 
 const router = useRouter()
 const globalSnackbar = useGlobalSnackbarStore()
+
+const username = localStorage.getItem('user').username
 
 const handleLogout = () => {
   axios.post('/logout', { 
@@ -85,7 +87,7 @@ const handleLogout = () => {
             </template>
 
             <VListItemTitle class="font-weight-semibold">
-              John Doe
+              {{ username }}
             </VListItemTitle>
             <VListItemSubtitle>Admin</VListItemSubtitle>
           </VListItem>
