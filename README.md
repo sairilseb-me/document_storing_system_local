@@ -72,8 +72,11 @@ php artisan migrate
 php artisan db:seed --class=UserSeeder
 ```
 
-### Step 10: Connect to NAS
-Ensure you are connected to the same network as the NAS.
+### Step 10: change the APP_URL to desired ip and port
+
+```
+APP_URL=<ip-address:port>
+```
 
 ### Step 11: Create a Symlink for Storage
 
